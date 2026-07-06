@@ -29,7 +29,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     const { data: sub } = supabase.auth.onAuthStateChange((_ev, s) => {
       setSession(s);
       if (s?.user) {
-        setTimeout(() => fetchRole(s.user.id), 0);
+        fetchRole(s.user.id);
       } else {
         setRole(null);
       }
