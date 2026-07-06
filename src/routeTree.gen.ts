@@ -9,9 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ClientRouteImport } from './routes/client'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ClientIndexRouteImport } from './routes/client.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as ClientTeamRouteImport } from './routes/client.team'
+import { Route as ClientSupportRouteImport } from './routes/client.support'
+import { Route as ClientSubscriptionRouteImport } from './routes/client.subscription'
+import { Route as ClientSettingsRouteImport } from './routes/client.settings'
+import { Route as ClientPlaylistsRouteImport } from './routes/client.playlists'
+import { Route as ClientLiveRouteImport } from './routes/client.live'
+import { Route as ClientDevicesRouteImport } from './routes/client.devices'
+import { Route as ClientCatalogueRouteImport } from './routes/client.catalogue'
+import { Route as ClientBillingRouteImport } from './routes/client.billing'
+import { Route as ClientApiRouteImport } from './routes/client.api'
+import { Route as ClientAnalyticsRouteImport } from './routes/client.analytics'
 import { Route as AdminWorkspacesRouteImport } from './routes/admin.workspaces'
 import { Route as AdminUsersRouteImport } from './routes/admin.users'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
@@ -32,6 +45,11 @@ import { Route as AdminAuditRouteImport } from './routes/admin.audit'
 import { Route as AdminApiRouteImport } from './routes/admin.api'
 import { Route as AdminAnalyticsRouteImport } from './routes/admin.analytics'
 
+const ClientRoute = ClientRouteImport.update({
+  id: '/client',
+  path: '/client',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -42,10 +60,70 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ClientIndexRoute = ClientIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ClientRoute,
+} as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AdminRoute,
+} as any)
+const ClientTeamRoute = ClientTeamRouteImport.update({
+  id: '/team',
+  path: '/team',
+  getParentRoute: () => ClientRoute,
+} as any)
+const ClientSupportRoute = ClientSupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => ClientRoute,
+} as any)
+const ClientSubscriptionRoute = ClientSubscriptionRouteImport.update({
+  id: '/subscription',
+  path: '/subscription',
+  getParentRoute: () => ClientRoute,
+} as any)
+const ClientSettingsRoute = ClientSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => ClientRoute,
+} as any)
+const ClientPlaylistsRoute = ClientPlaylistsRouteImport.update({
+  id: '/playlists',
+  path: '/playlists',
+  getParentRoute: () => ClientRoute,
+} as any)
+const ClientLiveRoute = ClientLiveRouteImport.update({
+  id: '/live',
+  path: '/live',
+  getParentRoute: () => ClientRoute,
+} as any)
+const ClientDevicesRoute = ClientDevicesRouteImport.update({
+  id: '/devices',
+  path: '/devices',
+  getParentRoute: () => ClientRoute,
+} as any)
+const ClientCatalogueRoute = ClientCatalogueRouteImport.update({
+  id: '/catalogue',
+  path: '/catalogue',
+  getParentRoute: () => ClientRoute,
+} as any)
+const ClientBillingRoute = ClientBillingRouteImport.update({
+  id: '/billing',
+  path: '/billing',
+  getParentRoute: () => ClientRoute,
+} as any)
+const ClientApiRoute = ClientApiRouteImport.update({
+  id: '/api',
+  path: '/api',
+  getParentRoute: () => ClientRoute,
+} as any)
+const ClientAnalyticsRoute = ClientAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => ClientRoute,
 } as any)
 const AdminWorkspacesRoute = AdminWorkspacesRouteImport.update({
   id: '/workspaces',
@@ -146,6 +224,7 @@ const AdminAnalyticsRoute = AdminAnalyticsRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/client': typeof ClientRouteWithChildren
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/api': typeof AdminApiRoute
   '/admin/audit': typeof AdminAuditRoute
@@ -165,7 +244,19 @@ export interface FileRoutesByFullPath {
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/users': typeof AdminUsersRoute
   '/admin/workspaces': typeof AdminWorkspacesRoute
+  '/client/analytics': typeof ClientAnalyticsRoute
+  '/client/api': typeof ClientApiRoute
+  '/client/billing': typeof ClientBillingRoute
+  '/client/catalogue': typeof ClientCatalogueRoute
+  '/client/devices': typeof ClientDevicesRoute
+  '/client/live': typeof ClientLiveRoute
+  '/client/playlists': typeof ClientPlaylistsRoute
+  '/client/settings': typeof ClientSettingsRoute
+  '/client/subscription': typeof ClientSubscriptionRoute
+  '/client/support': typeof ClientSupportRoute
+  '/client/team': typeof ClientTeamRoute
   '/admin/': typeof AdminIndexRoute
+  '/client/': typeof ClientIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -188,12 +279,25 @@ export interface FileRoutesByTo {
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/users': typeof AdminUsersRoute
   '/admin/workspaces': typeof AdminWorkspacesRoute
+  '/client/analytics': typeof ClientAnalyticsRoute
+  '/client/api': typeof ClientApiRoute
+  '/client/billing': typeof ClientBillingRoute
+  '/client/catalogue': typeof ClientCatalogueRoute
+  '/client/devices': typeof ClientDevicesRoute
+  '/client/live': typeof ClientLiveRoute
+  '/client/playlists': typeof ClientPlaylistsRoute
+  '/client/settings': typeof ClientSettingsRoute
+  '/client/subscription': typeof ClientSubscriptionRoute
+  '/client/support': typeof ClientSupportRoute
+  '/client/team': typeof ClientTeamRoute
   '/admin': typeof AdminIndexRoute
+  '/client': typeof ClientIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/client': typeof ClientRouteWithChildren
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/api': typeof AdminApiRoute
   '/admin/audit': typeof AdminAuditRoute
@@ -213,13 +317,26 @@ export interface FileRoutesById {
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/users': typeof AdminUsersRoute
   '/admin/workspaces': typeof AdminWorkspacesRoute
+  '/client/analytics': typeof ClientAnalyticsRoute
+  '/client/api': typeof ClientApiRoute
+  '/client/billing': typeof ClientBillingRoute
+  '/client/catalogue': typeof ClientCatalogueRoute
+  '/client/devices': typeof ClientDevicesRoute
+  '/client/live': typeof ClientLiveRoute
+  '/client/playlists': typeof ClientPlaylistsRoute
+  '/client/settings': typeof ClientSettingsRoute
+  '/client/subscription': typeof ClientSubscriptionRoute
+  '/client/support': typeof ClientSupportRoute
+  '/client/team': typeof ClientTeamRoute
   '/admin/': typeof AdminIndexRoute
+  '/client/': typeof ClientIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/admin'
+    | '/client'
     | '/admin/analytics'
     | '/admin/api'
     | '/admin/audit'
@@ -239,7 +356,19 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/admin/users'
     | '/admin/workspaces'
+    | '/client/analytics'
+    | '/client/api'
+    | '/client/billing'
+    | '/client/catalogue'
+    | '/client/devices'
+    | '/client/live'
+    | '/client/playlists'
+    | '/client/settings'
+    | '/client/subscription'
+    | '/client/support'
+    | '/client/team'
     | '/admin/'
+    | '/client/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -262,11 +391,24 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/admin/users'
     | '/admin/workspaces'
+    | '/client/analytics'
+    | '/client/api'
+    | '/client/billing'
+    | '/client/catalogue'
+    | '/client/devices'
+    | '/client/live'
+    | '/client/playlists'
+    | '/client/settings'
+    | '/client/subscription'
+    | '/client/support'
+    | '/client/team'
     | '/admin'
+    | '/client'
   id:
     | '__root__'
     | '/'
     | '/admin'
+    | '/client'
     | '/admin/analytics'
     | '/admin/api'
     | '/admin/audit'
@@ -286,16 +428,36 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/admin/users'
     | '/admin/workspaces'
+    | '/client/analytics'
+    | '/client/api'
+    | '/client/billing'
+    | '/client/catalogue'
+    | '/client/devices'
+    | '/client/live'
+    | '/client/playlists'
+    | '/client/settings'
+    | '/client/subscription'
+    | '/client/support'
+    | '/client/team'
     | '/admin/'
+    | '/client/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
+  ClientRoute: typeof ClientRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/client': {
+      id: '/client'
+      path: '/client'
+      fullPath: '/client'
+      preLoaderRoute: typeof ClientRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin': {
       id: '/admin'
       path: '/admin'
@@ -310,12 +472,96 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/client/': {
+      id: '/client/'
+      path: '/'
+      fullPath: '/client/'
+      preLoaderRoute: typeof ClientIndexRouteImport
+      parentRoute: typeof ClientRoute
+    }
     '/admin/': {
       id: '/admin/'
       path: '/'
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/client/team': {
+      id: '/client/team'
+      path: '/team'
+      fullPath: '/client/team'
+      preLoaderRoute: typeof ClientTeamRouteImport
+      parentRoute: typeof ClientRoute
+    }
+    '/client/support': {
+      id: '/client/support'
+      path: '/support'
+      fullPath: '/client/support'
+      preLoaderRoute: typeof ClientSupportRouteImport
+      parentRoute: typeof ClientRoute
+    }
+    '/client/subscription': {
+      id: '/client/subscription'
+      path: '/subscription'
+      fullPath: '/client/subscription'
+      preLoaderRoute: typeof ClientSubscriptionRouteImport
+      parentRoute: typeof ClientRoute
+    }
+    '/client/settings': {
+      id: '/client/settings'
+      path: '/settings'
+      fullPath: '/client/settings'
+      preLoaderRoute: typeof ClientSettingsRouteImport
+      parentRoute: typeof ClientRoute
+    }
+    '/client/playlists': {
+      id: '/client/playlists'
+      path: '/playlists'
+      fullPath: '/client/playlists'
+      preLoaderRoute: typeof ClientPlaylistsRouteImport
+      parentRoute: typeof ClientRoute
+    }
+    '/client/live': {
+      id: '/client/live'
+      path: '/live'
+      fullPath: '/client/live'
+      preLoaderRoute: typeof ClientLiveRouteImport
+      parentRoute: typeof ClientRoute
+    }
+    '/client/devices': {
+      id: '/client/devices'
+      path: '/devices'
+      fullPath: '/client/devices'
+      preLoaderRoute: typeof ClientDevicesRouteImport
+      parentRoute: typeof ClientRoute
+    }
+    '/client/catalogue': {
+      id: '/client/catalogue'
+      path: '/catalogue'
+      fullPath: '/client/catalogue'
+      preLoaderRoute: typeof ClientCatalogueRouteImport
+      parentRoute: typeof ClientRoute
+    }
+    '/client/billing': {
+      id: '/client/billing'
+      path: '/billing'
+      fullPath: '/client/billing'
+      preLoaderRoute: typeof ClientBillingRouteImport
+      parentRoute: typeof ClientRoute
+    }
+    '/client/api': {
+      id: '/client/api'
+      path: '/api'
+      fullPath: '/client/api'
+      preLoaderRoute: typeof ClientApiRouteImport
+      parentRoute: typeof ClientRoute
+    }
+    '/client/analytics': {
+      id: '/client/analytics'
+      path: '/analytics'
+      fullPath: '/client/analytics'
+      preLoaderRoute: typeof ClientAnalyticsRouteImport
+      parentRoute: typeof ClientRoute
     }
     '/admin/workspaces': {
       id: '/admin/workspaces'
@@ -501,9 +747,43 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
+interface ClientRouteChildren {
+  ClientAnalyticsRoute: typeof ClientAnalyticsRoute
+  ClientApiRoute: typeof ClientApiRoute
+  ClientBillingRoute: typeof ClientBillingRoute
+  ClientCatalogueRoute: typeof ClientCatalogueRoute
+  ClientDevicesRoute: typeof ClientDevicesRoute
+  ClientLiveRoute: typeof ClientLiveRoute
+  ClientPlaylistsRoute: typeof ClientPlaylistsRoute
+  ClientSettingsRoute: typeof ClientSettingsRoute
+  ClientSubscriptionRoute: typeof ClientSubscriptionRoute
+  ClientSupportRoute: typeof ClientSupportRoute
+  ClientTeamRoute: typeof ClientTeamRoute
+  ClientIndexRoute: typeof ClientIndexRoute
+}
+
+const ClientRouteChildren: ClientRouteChildren = {
+  ClientAnalyticsRoute: ClientAnalyticsRoute,
+  ClientApiRoute: ClientApiRoute,
+  ClientBillingRoute: ClientBillingRoute,
+  ClientCatalogueRoute: ClientCatalogueRoute,
+  ClientDevicesRoute: ClientDevicesRoute,
+  ClientLiveRoute: ClientLiveRoute,
+  ClientPlaylistsRoute: ClientPlaylistsRoute,
+  ClientSettingsRoute: ClientSettingsRoute,
+  ClientSubscriptionRoute: ClientSubscriptionRoute,
+  ClientSupportRoute: ClientSupportRoute,
+  ClientTeamRoute: ClientTeamRoute,
+  ClientIndexRoute: ClientIndexRoute,
+}
+
+const ClientRouteWithChildren =
+  ClientRoute._addFileChildren(ClientRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
+  ClientRoute: ClientRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
