@@ -140,7 +140,7 @@ function Landing() {
             { t: "RBAC everywhere", d: "Super Admin, Content Manager, Client Admin, Staff and Viewer — enforced end-to-end." },
             { t: "Ready for CDN & payments", d: "Clean service layer waiting for CDN, transcoding, and payment integrations." },
           ].map((f) => (
-            <Card key={t.t} className="rounded-2xl border-border p-6 shadow-[var(--shadow-card)]">
+            <Card key={f.t} className="rounded-2xl border-border p-6 shadow-[var(--shadow-card)]">
               <Check className="h-5 w-5 text-primary" />
               <h3 className="mt-3 font-semibold">{f.t}</h3>
               <p className="mt-1 text-sm text-muted-foreground">{f.d}</p>
