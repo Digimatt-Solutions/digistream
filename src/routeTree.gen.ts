@@ -12,13 +12,24 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminWorkspacesRouteImport } from './routes/admin.workspaces'
 import { Route as AdminUsersRouteImport } from './routes/admin.users'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminSchedulingRouteImport } from './routes/admin.scheduling'
 import { Route as AdminRolesRouteImport } from './routes/admin.roles'
+import { Route as AdminReportsRouteImport } from './routes/admin.reports'
+import { Route as AdminPlaylistsRouteImport } from './routes/admin.playlists'
 import { Route as AdminPackagesRouteImport } from './routes/admin.packages'
+import { Route as AdminNotificationsRouteImport } from './routes/admin.notifications'
+import { Route as AdminMonitoringRouteImport } from './routes/admin.monitoring'
+import { Route as AdminLiveRouteImport } from './routes/admin.live'
 import { Route as AdminDevicesRouteImport } from './routes/admin.devices'
 import { Route as AdminContentRouteImport } from './routes/admin.content'
 import { Route as AdminClientsRouteImport } from './routes/admin.clients'
+import { Route as AdminCategoriesRouteImport } from './routes/admin.categories'
+import { Route as AdminBillingRouteImport } from './routes/admin.billing'
+import { Route as AdminAuditRouteImport } from './routes/admin.audit'
+import { Route as AdminApiRouteImport } from './routes/admin.api'
 import { Route as AdminAnalyticsRouteImport } from './routes/admin.analytics'
 
 const AdminRoute = AdminRouteImport.update({
@@ -36,6 +47,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminWorkspacesRoute = AdminWorkspacesRouteImport.update({
+  id: '/workspaces',
+  path: '/workspaces',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminUsersRoute = AdminUsersRouteImport.update({
   id: '/users',
   path: '/users',
@@ -46,14 +62,44 @@ const AdminSettingsRoute = AdminSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminSchedulingRoute = AdminSchedulingRouteImport.update({
+  id: '/scheduling',
+  path: '/scheduling',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminRolesRoute = AdminRolesRouteImport.update({
   id: '/roles',
   path: '/roles',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminReportsRoute = AdminReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPlaylistsRoute = AdminPlaylistsRouteImport.update({
+  id: '/playlists',
+  path: '/playlists',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminPackagesRoute = AdminPackagesRouteImport.update({
   id: '/packages',
   path: '/packages',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminNotificationsRoute = AdminNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminMonitoringRoute = AdminMonitoringRouteImport.update({
+  id: '/monitoring',
+  path: '/monitoring',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminLiveRoute = AdminLiveRouteImport.update({
+  id: '/live',
+  path: '/live',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminDevicesRoute = AdminDevicesRouteImport.update({
@@ -71,6 +117,26 @@ const AdminClientsRoute = AdminClientsRouteImport.update({
   path: '/clients',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminCategoriesRoute = AdminCategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminBillingRoute = AdminBillingRouteImport.update({
+  id: '/billing',
+  path: '/billing',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAuditRoute = AdminAuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminApiRoute = AdminApiRouteImport.update({
+  id: '/api',
+  path: '/api',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminAnalyticsRoute = AdminAnalyticsRouteImport.update({
   id: '/analytics',
   path: '/analytics',
@@ -81,25 +147,47 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/admin/analytics': typeof AdminAnalyticsRoute
+  '/admin/api': typeof AdminApiRoute
+  '/admin/audit': typeof AdminAuditRoute
+  '/admin/billing': typeof AdminBillingRoute
+  '/admin/categories': typeof AdminCategoriesRoute
   '/admin/clients': typeof AdminClientsRoute
   '/admin/content': typeof AdminContentRoute
   '/admin/devices': typeof AdminDevicesRoute
+  '/admin/live': typeof AdminLiveRoute
+  '/admin/monitoring': typeof AdminMonitoringRoute
+  '/admin/notifications': typeof AdminNotificationsRoute
   '/admin/packages': typeof AdminPackagesRoute
+  '/admin/playlists': typeof AdminPlaylistsRoute
+  '/admin/reports': typeof AdminReportsRoute
   '/admin/roles': typeof AdminRolesRoute
+  '/admin/scheduling': typeof AdminSchedulingRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/users': typeof AdminUsersRoute
+  '/admin/workspaces': typeof AdminWorkspacesRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
+  '/admin/api': typeof AdminApiRoute
+  '/admin/audit': typeof AdminAuditRoute
+  '/admin/billing': typeof AdminBillingRoute
+  '/admin/categories': typeof AdminCategoriesRoute
   '/admin/clients': typeof AdminClientsRoute
   '/admin/content': typeof AdminContentRoute
   '/admin/devices': typeof AdminDevicesRoute
+  '/admin/live': typeof AdminLiveRoute
+  '/admin/monitoring': typeof AdminMonitoringRoute
+  '/admin/notifications': typeof AdminNotificationsRoute
   '/admin/packages': typeof AdminPackagesRoute
+  '/admin/playlists': typeof AdminPlaylistsRoute
+  '/admin/reports': typeof AdminReportsRoute
   '/admin/roles': typeof AdminRolesRoute
+  '/admin/scheduling': typeof AdminSchedulingRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/users': typeof AdminUsersRoute
+  '/admin/workspaces': typeof AdminWorkspacesRoute
   '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
@@ -107,13 +195,24 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/admin/analytics': typeof AdminAnalyticsRoute
+  '/admin/api': typeof AdminApiRoute
+  '/admin/audit': typeof AdminAuditRoute
+  '/admin/billing': typeof AdminBillingRoute
+  '/admin/categories': typeof AdminCategoriesRoute
   '/admin/clients': typeof AdminClientsRoute
   '/admin/content': typeof AdminContentRoute
   '/admin/devices': typeof AdminDevicesRoute
+  '/admin/live': typeof AdminLiveRoute
+  '/admin/monitoring': typeof AdminMonitoringRoute
+  '/admin/notifications': typeof AdminNotificationsRoute
   '/admin/packages': typeof AdminPackagesRoute
+  '/admin/playlists': typeof AdminPlaylistsRoute
+  '/admin/reports': typeof AdminReportsRoute
   '/admin/roles': typeof AdminRolesRoute
+  '/admin/scheduling': typeof AdminSchedulingRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/users': typeof AdminUsersRoute
+  '/admin/workspaces': typeof AdminWorkspacesRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
@@ -122,38 +221,71 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/admin/analytics'
+    | '/admin/api'
+    | '/admin/audit'
+    | '/admin/billing'
+    | '/admin/categories'
     | '/admin/clients'
     | '/admin/content'
     | '/admin/devices'
+    | '/admin/live'
+    | '/admin/monitoring'
+    | '/admin/notifications'
     | '/admin/packages'
+    | '/admin/playlists'
+    | '/admin/reports'
     | '/admin/roles'
+    | '/admin/scheduling'
     | '/admin/settings'
     | '/admin/users'
+    | '/admin/workspaces'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/admin/analytics'
+    | '/admin/api'
+    | '/admin/audit'
+    | '/admin/billing'
+    | '/admin/categories'
     | '/admin/clients'
     | '/admin/content'
     | '/admin/devices'
+    | '/admin/live'
+    | '/admin/monitoring'
+    | '/admin/notifications'
     | '/admin/packages'
+    | '/admin/playlists'
+    | '/admin/reports'
     | '/admin/roles'
+    | '/admin/scheduling'
     | '/admin/settings'
     | '/admin/users'
+    | '/admin/workspaces'
     | '/admin'
   id:
     | '__root__'
     | '/'
     | '/admin'
     | '/admin/analytics'
+    | '/admin/api'
+    | '/admin/audit'
+    | '/admin/billing'
+    | '/admin/categories'
     | '/admin/clients'
     | '/admin/content'
     | '/admin/devices'
+    | '/admin/live'
+    | '/admin/monitoring'
+    | '/admin/notifications'
     | '/admin/packages'
+    | '/admin/playlists'
+    | '/admin/reports'
     | '/admin/roles'
+    | '/admin/scheduling'
     | '/admin/settings'
     | '/admin/users'
+    | '/admin/workspaces'
     | '/admin/'
   fileRoutesById: FileRoutesById
 }
@@ -185,6 +317,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/workspaces': {
+      id: '/admin/workspaces'
+      path: '/workspaces'
+      fullPath: '/admin/workspaces'
+      preLoaderRoute: typeof AdminWorkspacesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/users': {
       id: '/admin/users'
       path: '/users'
@@ -199,6 +338,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSettingsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/scheduling': {
+      id: '/admin/scheduling'
+      path: '/scheduling'
+      fullPath: '/admin/scheduling'
+      preLoaderRoute: typeof AdminSchedulingRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/roles': {
       id: '/admin/roles'
       path: '/roles'
@@ -206,11 +352,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRolesRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/reports': {
+      id: '/admin/reports'
+      path: '/reports'
+      fullPath: '/admin/reports'
+      preLoaderRoute: typeof AdminReportsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/playlists': {
+      id: '/admin/playlists'
+      path: '/playlists'
+      fullPath: '/admin/playlists'
+      preLoaderRoute: typeof AdminPlaylistsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/packages': {
       id: '/admin/packages'
       path: '/packages'
       fullPath: '/admin/packages'
       preLoaderRoute: typeof AdminPackagesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/notifications': {
+      id: '/admin/notifications'
+      path: '/notifications'
+      fullPath: '/admin/notifications'
+      preLoaderRoute: typeof AdminNotificationsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/monitoring': {
+      id: '/admin/monitoring'
+      path: '/monitoring'
+      fullPath: '/admin/monitoring'
+      preLoaderRoute: typeof AdminMonitoringRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/live': {
+      id: '/admin/live'
+      path: '/live'
+      fullPath: '/admin/live'
+      preLoaderRoute: typeof AdminLiveRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/devices': {
@@ -234,6 +415,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminClientsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/categories': {
+      id: '/admin/categories'
+      path: '/categories'
+      fullPath: '/admin/categories'
+      preLoaderRoute: typeof AdminCategoriesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/billing': {
+      id: '/admin/billing'
+      path: '/billing'
+      fullPath: '/admin/billing'
+      preLoaderRoute: typeof AdminBillingRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/audit': {
+      id: '/admin/audit'
+      path: '/audit'
+      fullPath: '/admin/audit'
+      preLoaderRoute: typeof AdminAuditRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/api': {
+      id: '/admin/api'
+      path: '/api'
+      fullPath: '/admin/api'
+      preLoaderRoute: typeof AdminApiRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/analytics': {
       id: '/admin/analytics'
       path: '/analytics'
@@ -246,25 +455,47 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminAnalyticsRoute: typeof AdminAnalyticsRoute
+  AdminApiRoute: typeof AdminApiRoute
+  AdminAuditRoute: typeof AdminAuditRoute
+  AdminBillingRoute: typeof AdminBillingRoute
+  AdminCategoriesRoute: typeof AdminCategoriesRoute
   AdminClientsRoute: typeof AdminClientsRoute
   AdminContentRoute: typeof AdminContentRoute
   AdminDevicesRoute: typeof AdminDevicesRoute
+  AdminLiveRoute: typeof AdminLiveRoute
+  AdminMonitoringRoute: typeof AdminMonitoringRoute
+  AdminNotificationsRoute: typeof AdminNotificationsRoute
   AdminPackagesRoute: typeof AdminPackagesRoute
+  AdminPlaylistsRoute: typeof AdminPlaylistsRoute
+  AdminReportsRoute: typeof AdminReportsRoute
   AdminRolesRoute: typeof AdminRolesRoute
+  AdminSchedulingRoute: typeof AdminSchedulingRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminUsersRoute: typeof AdminUsersRoute
+  AdminWorkspacesRoute: typeof AdminWorkspacesRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminAnalyticsRoute: AdminAnalyticsRoute,
+  AdminApiRoute: AdminApiRoute,
+  AdminAuditRoute: AdminAuditRoute,
+  AdminBillingRoute: AdminBillingRoute,
+  AdminCategoriesRoute: AdminCategoriesRoute,
   AdminClientsRoute: AdminClientsRoute,
   AdminContentRoute: AdminContentRoute,
   AdminDevicesRoute: AdminDevicesRoute,
+  AdminLiveRoute: AdminLiveRoute,
+  AdminMonitoringRoute: AdminMonitoringRoute,
+  AdminNotificationsRoute: AdminNotificationsRoute,
   AdminPackagesRoute: AdminPackagesRoute,
+  AdminPlaylistsRoute: AdminPlaylistsRoute,
+  AdminReportsRoute: AdminReportsRoute,
   AdminRolesRoute: AdminRolesRoute,
+  AdminSchedulingRoute: AdminSchedulingRoute,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminUsersRoute: AdminUsersRoute,
+  AdminWorkspacesRoute: AdminWorkspacesRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
