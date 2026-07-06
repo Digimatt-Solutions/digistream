@@ -9,50 +9,31 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ClientRouteImport } from './routes/client'
-import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ClientIndexRouteImport } from './routes/client.index'
-import { Route as AdminIndexRouteImport } from './routes/admin.index'
-import { Route as ClientTeamRouteImport } from './routes/client.team'
-import { Route as ClientSupportRouteImport } from './routes/client.support'
-import { Route as ClientSubscriptionRouteImport } from './routes/client.subscription'
-import { Route as ClientSettingsRouteImport } from './routes/client.settings'
-import { Route as ClientPlaylistsRouteImport } from './routes/client.playlists'
-import { Route as ClientLiveRouteImport } from './routes/client.live'
-import { Route as ClientDevicesRouteImport } from './routes/client.devices'
-import { Route as ClientCatalogueRouteImport } from './routes/client.catalogue'
-import { Route as ClientBillingRouteImport } from './routes/client.billing'
-import { Route as ClientApiRouteImport } from './routes/client.api'
-import { Route as ClientAnalyticsRouteImport } from './routes/client.analytics'
-import { Route as AdminWorkspacesRouteImport } from './routes/admin.workspaces'
-import { Route as AdminUsersRouteImport } from './routes/admin.users'
-import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
-import { Route as AdminSchedulingRouteImport } from './routes/admin.scheduling'
-import { Route as AdminRolesRouteImport } from './routes/admin.roles'
-import { Route as AdminReportsRouteImport } from './routes/admin.reports'
-import { Route as AdminPlaylistsRouteImport } from './routes/admin.playlists'
-import { Route as AdminPackagesRouteImport } from './routes/admin.packages'
-import { Route as AdminNotificationsRouteImport } from './routes/admin.notifications'
-import { Route as AdminMonitoringRouteImport } from './routes/admin.monitoring'
-import { Route as AdminLiveRouteImport } from './routes/admin.live'
-import { Route as AdminDevicesRouteImport } from './routes/admin.devices'
-import { Route as AdminContentRouteImport } from './routes/admin.content'
-import { Route as AdminClientsRouteImport } from './routes/admin.clients'
-import { Route as AdminCategoriesRouteImport } from './routes/admin.categories'
-import { Route as AdminBillingRouteImport } from './routes/admin.billing'
-import { Route as AdminAuditRouteImport } from './routes/admin.audit'
-import { Route as AdminApiRouteImport } from './routes/admin.api'
-import { Route as AdminAnalyticsRouteImport } from './routes/admin.analytics'
+import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppWatchRouteImport } from './routes/app.watch'
+import { Route as AppUsersRouteImport } from './routes/app.users'
+import { Route as AppSubscriptionRouteImport } from './routes/app.subscription'
+import { Route as AppSettingsRouteImport } from './routes/app.settings'
+import { Route as AppProfileRouteImport } from './routes/app.profile'
+import { Route as AppPackagesRouteImport } from './routes/app.packages'
+import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
+import { Route as AppContentRouteImport } from './routes/app.content'
+import { Route as AppBrandingRouteImport } from './routes/app.branding'
+import { Route as AppBillingRouteImport } from './routes/app.billing'
+import { Route as AppActivityRouteImport } from './routes/app.activity'
+import { Route as ApiPublicSeedAdminRouteImport } from './routes/api/public/seed-admin'
 
-const ClientRoute = ClientRouteImport.update({
-  id: '/client',
-  path: '/client',
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -60,409 +41,203 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ClientIndexRoute = ClientIndexRouteImport.update({
+const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => ClientRoute,
+  getParentRoute: () => AppRoute,
 } as any)
-const AdminIndexRoute = AdminIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AdminRoute,
+const AppWatchRoute = AppWatchRouteImport.update({
+  id: '/watch',
+  path: '/watch',
+  getParentRoute: () => AppRoute,
 } as any)
-const ClientTeamRoute = ClientTeamRouteImport.update({
-  id: '/team',
-  path: '/team',
-  getParentRoute: () => ClientRoute,
-} as any)
-const ClientSupportRoute = ClientSupportRouteImport.update({
-  id: '/support',
-  path: '/support',
-  getParentRoute: () => ClientRoute,
-} as any)
-const ClientSubscriptionRoute = ClientSubscriptionRouteImport.update({
-  id: '/subscription',
-  path: '/subscription',
-  getParentRoute: () => ClientRoute,
-} as any)
-const ClientSettingsRoute = ClientSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => ClientRoute,
-} as any)
-const ClientPlaylistsRoute = ClientPlaylistsRouteImport.update({
-  id: '/playlists',
-  path: '/playlists',
-  getParentRoute: () => ClientRoute,
-} as any)
-const ClientLiveRoute = ClientLiveRouteImport.update({
-  id: '/live',
-  path: '/live',
-  getParentRoute: () => ClientRoute,
-} as any)
-const ClientDevicesRoute = ClientDevicesRouteImport.update({
-  id: '/devices',
-  path: '/devices',
-  getParentRoute: () => ClientRoute,
-} as any)
-const ClientCatalogueRoute = ClientCatalogueRouteImport.update({
-  id: '/catalogue',
-  path: '/catalogue',
-  getParentRoute: () => ClientRoute,
-} as any)
-const ClientBillingRoute = ClientBillingRouteImport.update({
-  id: '/billing',
-  path: '/billing',
-  getParentRoute: () => ClientRoute,
-} as any)
-const ClientApiRoute = ClientApiRouteImport.update({
-  id: '/api',
-  path: '/api',
-  getParentRoute: () => ClientRoute,
-} as any)
-const ClientAnalyticsRoute = ClientAnalyticsRouteImport.update({
-  id: '/analytics',
-  path: '/analytics',
-  getParentRoute: () => ClientRoute,
-} as any)
-const AdminWorkspacesRoute = AdminWorkspacesRouteImport.update({
-  id: '/workspaces',
-  path: '/workspaces',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminUsersRoute = AdminUsersRouteImport.update({
+const AppUsersRoute = AppUsersRouteImport.update({
   id: '/users',
   path: '/users',
-  getParentRoute: () => AdminRoute,
+  getParentRoute: () => AppRoute,
 } as any)
-const AdminSettingsRoute = AdminSettingsRouteImport.update({
+const AppSubscriptionRoute = AppSubscriptionRouteImport.update({
+  id: '/subscription',
+  path: '/subscription',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
-  getParentRoute: () => AdminRoute,
+  getParentRoute: () => AppRoute,
 } as any)
-const AdminSchedulingRoute = AdminSchedulingRouteImport.update({
-  id: '/scheduling',
-  path: '/scheduling',
-  getParentRoute: () => AdminRoute,
+const AppProfileRoute = AppProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AppRoute,
 } as any)
-const AdminRolesRoute = AdminRolesRouteImport.update({
-  id: '/roles',
-  path: '/roles',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminReportsRoute = AdminReportsRouteImport.update({
-  id: '/reports',
-  path: '/reports',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminPlaylistsRoute = AdminPlaylistsRouteImport.update({
-  id: '/playlists',
-  path: '/playlists',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminPackagesRoute = AdminPackagesRouteImport.update({
+const AppPackagesRoute = AppPackagesRouteImport.update({
   id: '/packages',
   path: '/packages',
-  getParentRoute: () => AdminRoute,
+  getParentRoute: () => AppRoute,
 } as any)
-const AdminNotificationsRoute = AdminNotificationsRouteImport.update({
-  id: '/notifications',
-  path: '/notifications',
-  getParentRoute: () => AdminRoute,
+const AppDashboardRoute = AppDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppRoute,
 } as any)
-const AdminMonitoringRoute = AdminMonitoringRouteImport.update({
-  id: '/monitoring',
-  path: '/monitoring',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminLiveRoute = AdminLiveRouteImport.update({
-  id: '/live',
-  path: '/live',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminDevicesRoute = AdminDevicesRouteImport.update({
-  id: '/devices',
-  path: '/devices',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminContentRoute = AdminContentRouteImport.update({
+const AppContentRoute = AppContentRouteImport.update({
   id: '/content',
   path: '/content',
-  getParentRoute: () => AdminRoute,
+  getParentRoute: () => AppRoute,
 } as any)
-const AdminClientsRoute = AdminClientsRouteImport.update({
-  id: '/clients',
-  path: '/clients',
-  getParentRoute: () => AdminRoute,
+const AppBrandingRoute = AppBrandingRouteImport.update({
+  id: '/branding',
+  path: '/branding',
+  getParentRoute: () => AppRoute,
 } as any)
-const AdminCategoriesRoute = AdminCategoriesRouteImport.update({
-  id: '/categories',
-  path: '/categories',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminBillingRoute = AdminBillingRouteImport.update({
+const AppBillingRoute = AppBillingRouteImport.update({
   id: '/billing',
   path: '/billing',
-  getParentRoute: () => AdminRoute,
+  getParentRoute: () => AppRoute,
 } as any)
-const AdminAuditRoute = AdminAuditRouteImport.update({
-  id: '/audit',
-  path: '/audit',
-  getParentRoute: () => AdminRoute,
+const AppActivityRoute = AppActivityRouteImport.update({
+  id: '/activity',
+  path: '/activity',
+  getParentRoute: () => AppRoute,
 } as any)
-const AdminApiRoute = AdminApiRouteImport.update({
-  id: '/api',
-  path: '/api',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminAnalyticsRoute = AdminAnalyticsRouteImport.update({
-  id: '/analytics',
-  path: '/analytics',
-  getParentRoute: () => AdminRoute,
+const ApiPublicSeedAdminRoute = ApiPublicSeedAdminRouteImport.update({
+  id: '/api/public/seed-admin',
+  path: '/api/public/seed-admin',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteWithChildren
-  '/client': typeof ClientRouteWithChildren
-  '/admin/analytics': typeof AdminAnalyticsRoute
-  '/admin/api': typeof AdminApiRoute
-  '/admin/audit': typeof AdminAuditRoute
-  '/admin/billing': typeof AdminBillingRoute
-  '/admin/categories': typeof AdminCategoriesRoute
-  '/admin/clients': typeof AdminClientsRoute
-  '/admin/content': typeof AdminContentRoute
-  '/admin/devices': typeof AdminDevicesRoute
-  '/admin/live': typeof AdminLiveRoute
-  '/admin/monitoring': typeof AdminMonitoringRoute
-  '/admin/notifications': typeof AdminNotificationsRoute
-  '/admin/packages': typeof AdminPackagesRoute
-  '/admin/playlists': typeof AdminPlaylistsRoute
-  '/admin/reports': typeof AdminReportsRoute
-  '/admin/roles': typeof AdminRolesRoute
-  '/admin/scheduling': typeof AdminSchedulingRoute
-  '/admin/settings': typeof AdminSettingsRoute
-  '/admin/users': typeof AdminUsersRoute
-  '/admin/workspaces': typeof AdminWorkspacesRoute
-  '/client/analytics': typeof ClientAnalyticsRoute
-  '/client/api': typeof ClientApiRoute
-  '/client/billing': typeof ClientBillingRoute
-  '/client/catalogue': typeof ClientCatalogueRoute
-  '/client/devices': typeof ClientDevicesRoute
-  '/client/live': typeof ClientLiveRoute
-  '/client/playlists': typeof ClientPlaylistsRoute
-  '/client/settings': typeof ClientSettingsRoute
-  '/client/subscription': typeof ClientSubscriptionRoute
-  '/client/support': typeof ClientSupportRoute
-  '/client/team': typeof ClientTeamRoute
-  '/admin/': typeof AdminIndexRoute
-  '/client/': typeof ClientIndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/app/activity': typeof AppActivityRoute
+  '/app/billing': typeof AppBillingRoute
+  '/app/branding': typeof AppBrandingRoute
+  '/app/content': typeof AppContentRoute
+  '/app/dashboard': typeof AppDashboardRoute
+  '/app/packages': typeof AppPackagesRoute
+  '/app/profile': typeof AppProfileRoute
+  '/app/settings': typeof AppSettingsRoute
+  '/app/subscription': typeof AppSubscriptionRoute
+  '/app/users': typeof AppUsersRoute
+  '/app/watch': typeof AppWatchRoute
+  '/app/': typeof AppIndexRoute
+  '/api/public/seed-admin': typeof ApiPublicSeedAdminRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin/analytics': typeof AdminAnalyticsRoute
-  '/admin/api': typeof AdminApiRoute
-  '/admin/audit': typeof AdminAuditRoute
-  '/admin/billing': typeof AdminBillingRoute
-  '/admin/categories': typeof AdminCategoriesRoute
-  '/admin/clients': typeof AdminClientsRoute
-  '/admin/content': typeof AdminContentRoute
-  '/admin/devices': typeof AdminDevicesRoute
-  '/admin/live': typeof AdminLiveRoute
-  '/admin/monitoring': typeof AdminMonitoringRoute
-  '/admin/notifications': typeof AdminNotificationsRoute
-  '/admin/packages': typeof AdminPackagesRoute
-  '/admin/playlists': typeof AdminPlaylistsRoute
-  '/admin/reports': typeof AdminReportsRoute
-  '/admin/roles': typeof AdminRolesRoute
-  '/admin/scheduling': typeof AdminSchedulingRoute
-  '/admin/settings': typeof AdminSettingsRoute
-  '/admin/users': typeof AdminUsersRoute
-  '/admin/workspaces': typeof AdminWorkspacesRoute
-  '/client/analytics': typeof ClientAnalyticsRoute
-  '/client/api': typeof ClientApiRoute
-  '/client/billing': typeof ClientBillingRoute
-  '/client/catalogue': typeof ClientCatalogueRoute
-  '/client/devices': typeof ClientDevicesRoute
-  '/client/live': typeof ClientLiveRoute
-  '/client/playlists': typeof ClientPlaylistsRoute
-  '/client/settings': typeof ClientSettingsRoute
-  '/client/subscription': typeof ClientSubscriptionRoute
-  '/client/support': typeof ClientSupportRoute
-  '/client/team': typeof ClientTeamRoute
-  '/admin': typeof AdminIndexRoute
-  '/client': typeof ClientIndexRoute
+  '/auth': typeof AuthRoute
+  '/app/activity': typeof AppActivityRoute
+  '/app/billing': typeof AppBillingRoute
+  '/app/branding': typeof AppBrandingRoute
+  '/app/content': typeof AppContentRoute
+  '/app/dashboard': typeof AppDashboardRoute
+  '/app/packages': typeof AppPackagesRoute
+  '/app/profile': typeof AppProfileRoute
+  '/app/settings': typeof AppSettingsRoute
+  '/app/subscription': typeof AppSubscriptionRoute
+  '/app/users': typeof AppUsersRoute
+  '/app/watch': typeof AppWatchRoute
+  '/app': typeof AppIndexRoute
+  '/api/public/seed-admin': typeof ApiPublicSeedAdminRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteWithChildren
-  '/client': typeof ClientRouteWithChildren
-  '/admin/analytics': typeof AdminAnalyticsRoute
-  '/admin/api': typeof AdminApiRoute
-  '/admin/audit': typeof AdminAuditRoute
-  '/admin/billing': typeof AdminBillingRoute
-  '/admin/categories': typeof AdminCategoriesRoute
-  '/admin/clients': typeof AdminClientsRoute
-  '/admin/content': typeof AdminContentRoute
-  '/admin/devices': typeof AdminDevicesRoute
-  '/admin/live': typeof AdminLiveRoute
-  '/admin/monitoring': typeof AdminMonitoringRoute
-  '/admin/notifications': typeof AdminNotificationsRoute
-  '/admin/packages': typeof AdminPackagesRoute
-  '/admin/playlists': typeof AdminPlaylistsRoute
-  '/admin/reports': typeof AdminReportsRoute
-  '/admin/roles': typeof AdminRolesRoute
-  '/admin/scheduling': typeof AdminSchedulingRoute
-  '/admin/settings': typeof AdminSettingsRoute
-  '/admin/users': typeof AdminUsersRoute
-  '/admin/workspaces': typeof AdminWorkspacesRoute
-  '/client/analytics': typeof ClientAnalyticsRoute
-  '/client/api': typeof ClientApiRoute
-  '/client/billing': typeof ClientBillingRoute
-  '/client/catalogue': typeof ClientCatalogueRoute
-  '/client/devices': typeof ClientDevicesRoute
-  '/client/live': typeof ClientLiveRoute
-  '/client/playlists': typeof ClientPlaylistsRoute
-  '/client/settings': typeof ClientSettingsRoute
-  '/client/subscription': typeof ClientSubscriptionRoute
-  '/client/support': typeof ClientSupportRoute
-  '/client/team': typeof ClientTeamRoute
-  '/admin/': typeof AdminIndexRoute
-  '/client/': typeof ClientIndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/app/activity': typeof AppActivityRoute
+  '/app/billing': typeof AppBillingRoute
+  '/app/branding': typeof AppBrandingRoute
+  '/app/content': typeof AppContentRoute
+  '/app/dashboard': typeof AppDashboardRoute
+  '/app/packages': typeof AppPackagesRoute
+  '/app/profile': typeof AppProfileRoute
+  '/app/settings': typeof AppSettingsRoute
+  '/app/subscription': typeof AppSubscriptionRoute
+  '/app/users': typeof AppUsersRoute
+  '/app/watch': typeof AppWatchRoute
+  '/app/': typeof AppIndexRoute
+  '/api/public/seed-admin': typeof ApiPublicSeedAdminRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/admin'
-    | '/client'
-    | '/admin/analytics'
-    | '/admin/api'
-    | '/admin/audit'
-    | '/admin/billing'
-    | '/admin/categories'
-    | '/admin/clients'
-    | '/admin/content'
-    | '/admin/devices'
-    | '/admin/live'
-    | '/admin/monitoring'
-    | '/admin/notifications'
-    | '/admin/packages'
-    | '/admin/playlists'
-    | '/admin/reports'
-    | '/admin/roles'
-    | '/admin/scheduling'
-    | '/admin/settings'
-    | '/admin/users'
-    | '/admin/workspaces'
-    | '/client/analytics'
-    | '/client/api'
-    | '/client/billing'
-    | '/client/catalogue'
-    | '/client/devices'
-    | '/client/live'
-    | '/client/playlists'
-    | '/client/settings'
-    | '/client/subscription'
-    | '/client/support'
-    | '/client/team'
-    | '/admin/'
-    | '/client/'
+    | '/app'
+    | '/auth'
+    | '/app/activity'
+    | '/app/billing'
+    | '/app/branding'
+    | '/app/content'
+    | '/app/dashboard'
+    | '/app/packages'
+    | '/app/profile'
+    | '/app/settings'
+    | '/app/subscription'
+    | '/app/users'
+    | '/app/watch'
+    | '/app/'
+    | '/api/public/seed-admin'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/admin/analytics'
-    | '/admin/api'
-    | '/admin/audit'
-    | '/admin/billing'
-    | '/admin/categories'
-    | '/admin/clients'
-    | '/admin/content'
-    | '/admin/devices'
-    | '/admin/live'
-    | '/admin/monitoring'
-    | '/admin/notifications'
-    | '/admin/packages'
-    | '/admin/playlists'
-    | '/admin/reports'
-    | '/admin/roles'
-    | '/admin/scheduling'
-    | '/admin/settings'
-    | '/admin/users'
-    | '/admin/workspaces'
-    | '/client/analytics'
-    | '/client/api'
-    | '/client/billing'
-    | '/client/catalogue'
-    | '/client/devices'
-    | '/client/live'
-    | '/client/playlists'
-    | '/client/settings'
-    | '/client/subscription'
-    | '/client/support'
-    | '/client/team'
-    | '/admin'
-    | '/client'
+    | '/auth'
+    | '/app/activity'
+    | '/app/billing'
+    | '/app/branding'
+    | '/app/content'
+    | '/app/dashboard'
+    | '/app/packages'
+    | '/app/profile'
+    | '/app/settings'
+    | '/app/subscription'
+    | '/app/users'
+    | '/app/watch'
+    | '/app'
+    | '/api/public/seed-admin'
   id:
     | '__root__'
     | '/'
-    | '/admin'
-    | '/client'
-    | '/admin/analytics'
-    | '/admin/api'
-    | '/admin/audit'
-    | '/admin/billing'
-    | '/admin/categories'
-    | '/admin/clients'
-    | '/admin/content'
-    | '/admin/devices'
-    | '/admin/live'
-    | '/admin/monitoring'
-    | '/admin/notifications'
-    | '/admin/packages'
-    | '/admin/playlists'
-    | '/admin/reports'
-    | '/admin/roles'
-    | '/admin/scheduling'
-    | '/admin/settings'
-    | '/admin/users'
-    | '/admin/workspaces'
-    | '/client/analytics'
-    | '/client/api'
-    | '/client/billing'
-    | '/client/catalogue'
-    | '/client/devices'
-    | '/client/live'
-    | '/client/playlists'
-    | '/client/settings'
-    | '/client/subscription'
-    | '/client/support'
-    | '/client/team'
-    | '/admin/'
-    | '/client/'
+    | '/app'
+    | '/auth'
+    | '/app/activity'
+    | '/app/billing'
+    | '/app/branding'
+    | '/app/content'
+    | '/app/dashboard'
+    | '/app/packages'
+    | '/app/profile'
+    | '/app/settings'
+    | '/app/subscription'
+    | '/app/users'
+    | '/app/watch'
+    | '/app/'
+    | '/api/public/seed-admin'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRouteWithChildren
-  ClientRoute: typeof ClientRouteWithChildren
+  AppRoute: typeof AppRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  ApiPublicSeedAdminRoute: typeof ApiPublicSeedAdminRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/client': {
-      id: '/client'
-      path: '/client'
-      fullPath: '/client'
-      preLoaderRoute: typeof ClientRouteImport
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -472,318 +247,137 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/client/': {
-      id: '/client/'
+    '/app/': {
+      id: '/app/'
       path: '/'
-      fullPath: '/client/'
-      preLoaderRoute: typeof ClientIndexRouteImport
-      parentRoute: typeof ClientRoute
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
     }
-    '/admin/': {
-      id: '/admin/'
-      path: '/'
-      fullPath: '/admin/'
-      preLoaderRoute: typeof AdminIndexRouteImport
-      parentRoute: typeof AdminRoute
+    '/app/watch': {
+      id: '/app/watch'
+      path: '/watch'
+      fullPath: '/app/watch'
+      preLoaderRoute: typeof AppWatchRouteImport
+      parentRoute: typeof AppRoute
     }
-    '/client/team': {
-      id: '/client/team'
-      path: '/team'
-      fullPath: '/client/team'
-      preLoaderRoute: typeof ClientTeamRouteImport
-      parentRoute: typeof ClientRoute
-    }
-    '/client/support': {
-      id: '/client/support'
-      path: '/support'
-      fullPath: '/client/support'
-      preLoaderRoute: typeof ClientSupportRouteImport
-      parentRoute: typeof ClientRoute
-    }
-    '/client/subscription': {
-      id: '/client/subscription'
-      path: '/subscription'
-      fullPath: '/client/subscription'
-      preLoaderRoute: typeof ClientSubscriptionRouteImport
-      parentRoute: typeof ClientRoute
-    }
-    '/client/settings': {
-      id: '/client/settings'
-      path: '/settings'
-      fullPath: '/client/settings'
-      preLoaderRoute: typeof ClientSettingsRouteImport
-      parentRoute: typeof ClientRoute
-    }
-    '/client/playlists': {
-      id: '/client/playlists'
-      path: '/playlists'
-      fullPath: '/client/playlists'
-      preLoaderRoute: typeof ClientPlaylistsRouteImport
-      parentRoute: typeof ClientRoute
-    }
-    '/client/live': {
-      id: '/client/live'
-      path: '/live'
-      fullPath: '/client/live'
-      preLoaderRoute: typeof ClientLiveRouteImport
-      parentRoute: typeof ClientRoute
-    }
-    '/client/devices': {
-      id: '/client/devices'
-      path: '/devices'
-      fullPath: '/client/devices'
-      preLoaderRoute: typeof ClientDevicesRouteImport
-      parentRoute: typeof ClientRoute
-    }
-    '/client/catalogue': {
-      id: '/client/catalogue'
-      path: '/catalogue'
-      fullPath: '/client/catalogue'
-      preLoaderRoute: typeof ClientCatalogueRouteImport
-      parentRoute: typeof ClientRoute
-    }
-    '/client/billing': {
-      id: '/client/billing'
-      path: '/billing'
-      fullPath: '/client/billing'
-      preLoaderRoute: typeof ClientBillingRouteImport
-      parentRoute: typeof ClientRoute
-    }
-    '/client/api': {
-      id: '/client/api'
-      path: '/api'
-      fullPath: '/client/api'
-      preLoaderRoute: typeof ClientApiRouteImport
-      parentRoute: typeof ClientRoute
-    }
-    '/client/analytics': {
-      id: '/client/analytics'
-      path: '/analytics'
-      fullPath: '/client/analytics'
-      preLoaderRoute: typeof ClientAnalyticsRouteImport
-      parentRoute: typeof ClientRoute
-    }
-    '/admin/workspaces': {
-      id: '/admin/workspaces'
-      path: '/workspaces'
-      fullPath: '/admin/workspaces'
-      preLoaderRoute: typeof AdminWorkspacesRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/users': {
-      id: '/admin/users'
+    '/app/users': {
+      id: '/app/users'
       path: '/users'
-      fullPath: '/admin/users'
-      preLoaderRoute: typeof AdminUsersRouteImport
-      parentRoute: typeof AdminRoute
+      fullPath: '/app/users'
+      preLoaderRoute: typeof AppUsersRouteImport
+      parentRoute: typeof AppRoute
     }
-    '/admin/settings': {
-      id: '/admin/settings'
+    '/app/subscription': {
+      id: '/app/subscription'
+      path: '/subscription'
+      fullPath: '/app/subscription'
+      preLoaderRoute: typeof AppSubscriptionRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/settings': {
+      id: '/app/settings'
       path: '/settings'
-      fullPath: '/admin/settings'
-      preLoaderRoute: typeof AdminSettingsRouteImport
-      parentRoute: typeof AdminRoute
+      fullPath: '/app/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
     }
-    '/admin/scheduling': {
-      id: '/admin/scheduling'
-      path: '/scheduling'
-      fullPath: '/admin/scheduling'
-      preLoaderRoute: typeof AdminSchedulingRouteImport
-      parentRoute: typeof AdminRoute
+    '/app/profile': {
+      id: '/app/profile'
+      path: '/profile'
+      fullPath: '/app/profile'
+      preLoaderRoute: typeof AppProfileRouteImport
+      parentRoute: typeof AppRoute
     }
-    '/admin/roles': {
-      id: '/admin/roles'
-      path: '/roles'
-      fullPath: '/admin/roles'
-      preLoaderRoute: typeof AdminRolesRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/reports': {
-      id: '/admin/reports'
-      path: '/reports'
-      fullPath: '/admin/reports'
-      preLoaderRoute: typeof AdminReportsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/playlists': {
-      id: '/admin/playlists'
-      path: '/playlists'
-      fullPath: '/admin/playlists'
-      preLoaderRoute: typeof AdminPlaylistsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/packages': {
-      id: '/admin/packages'
+    '/app/packages': {
+      id: '/app/packages'
       path: '/packages'
-      fullPath: '/admin/packages'
-      preLoaderRoute: typeof AdminPackagesRouteImport
-      parentRoute: typeof AdminRoute
+      fullPath: '/app/packages'
+      preLoaderRoute: typeof AppPackagesRouteImport
+      parentRoute: typeof AppRoute
     }
-    '/admin/notifications': {
-      id: '/admin/notifications'
-      path: '/notifications'
-      fullPath: '/admin/notifications'
-      preLoaderRoute: typeof AdminNotificationsRouteImport
-      parentRoute: typeof AdminRoute
+    '/app/dashboard': {
+      id: '/app/dashboard'
+      path: '/dashboard'
+      fullPath: '/app/dashboard'
+      preLoaderRoute: typeof AppDashboardRouteImport
+      parentRoute: typeof AppRoute
     }
-    '/admin/monitoring': {
-      id: '/admin/monitoring'
-      path: '/monitoring'
-      fullPath: '/admin/monitoring'
-      preLoaderRoute: typeof AdminMonitoringRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/live': {
-      id: '/admin/live'
-      path: '/live'
-      fullPath: '/admin/live'
-      preLoaderRoute: typeof AdminLiveRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/devices': {
-      id: '/admin/devices'
-      path: '/devices'
-      fullPath: '/admin/devices'
-      preLoaderRoute: typeof AdminDevicesRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/content': {
-      id: '/admin/content'
+    '/app/content': {
+      id: '/app/content'
       path: '/content'
-      fullPath: '/admin/content'
-      preLoaderRoute: typeof AdminContentRouteImport
-      parentRoute: typeof AdminRoute
+      fullPath: '/app/content'
+      preLoaderRoute: typeof AppContentRouteImport
+      parentRoute: typeof AppRoute
     }
-    '/admin/clients': {
-      id: '/admin/clients'
-      path: '/clients'
-      fullPath: '/admin/clients'
-      preLoaderRoute: typeof AdminClientsRouteImport
-      parentRoute: typeof AdminRoute
+    '/app/branding': {
+      id: '/app/branding'
+      path: '/branding'
+      fullPath: '/app/branding'
+      preLoaderRoute: typeof AppBrandingRouteImport
+      parentRoute: typeof AppRoute
     }
-    '/admin/categories': {
-      id: '/admin/categories'
-      path: '/categories'
-      fullPath: '/admin/categories'
-      preLoaderRoute: typeof AdminCategoriesRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/billing': {
-      id: '/admin/billing'
+    '/app/billing': {
+      id: '/app/billing'
       path: '/billing'
-      fullPath: '/admin/billing'
-      preLoaderRoute: typeof AdminBillingRouteImport
-      parentRoute: typeof AdminRoute
+      fullPath: '/app/billing'
+      preLoaderRoute: typeof AppBillingRouteImport
+      parentRoute: typeof AppRoute
     }
-    '/admin/audit': {
-      id: '/admin/audit'
-      path: '/audit'
-      fullPath: '/admin/audit'
-      preLoaderRoute: typeof AdminAuditRouteImport
-      parentRoute: typeof AdminRoute
+    '/app/activity': {
+      id: '/app/activity'
+      path: '/activity'
+      fullPath: '/app/activity'
+      preLoaderRoute: typeof AppActivityRouteImport
+      parentRoute: typeof AppRoute
     }
-    '/admin/api': {
-      id: '/admin/api'
-      path: '/api'
-      fullPath: '/admin/api'
-      preLoaderRoute: typeof AdminApiRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/analytics': {
-      id: '/admin/analytics'
-      path: '/analytics'
-      fullPath: '/admin/analytics'
-      preLoaderRoute: typeof AdminAnalyticsRouteImport
-      parentRoute: typeof AdminRoute
+    '/api/public/seed-admin': {
+      id: '/api/public/seed-admin'
+      path: '/api/public/seed-admin'
+      fullPath: '/api/public/seed-admin'
+      preLoaderRoute: typeof ApiPublicSeedAdminRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
 
-interface AdminRouteChildren {
-  AdminAnalyticsRoute: typeof AdminAnalyticsRoute
-  AdminApiRoute: typeof AdminApiRoute
-  AdminAuditRoute: typeof AdminAuditRoute
-  AdminBillingRoute: typeof AdminBillingRoute
-  AdminCategoriesRoute: typeof AdminCategoriesRoute
-  AdminClientsRoute: typeof AdminClientsRoute
-  AdminContentRoute: typeof AdminContentRoute
-  AdminDevicesRoute: typeof AdminDevicesRoute
-  AdminLiveRoute: typeof AdminLiveRoute
-  AdminMonitoringRoute: typeof AdminMonitoringRoute
-  AdminNotificationsRoute: typeof AdminNotificationsRoute
-  AdminPackagesRoute: typeof AdminPackagesRoute
-  AdminPlaylistsRoute: typeof AdminPlaylistsRoute
-  AdminReportsRoute: typeof AdminReportsRoute
-  AdminRolesRoute: typeof AdminRolesRoute
-  AdminSchedulingRoute: typeof AdminSchedulingRoute
-  AdminSettingsRoute: typeof AdminSettingsRoute
-  AdminUsersRoute: typeof AdminUsersRoute
-  AdminWorkspacesRoute: typeof AdminWorkspacesRoute
-  AdminIndexRoute: typeof AdminIndexRoute
+interface AppRouteChildren {
+  AppActivityRoute: typeof AppActivityRoute
+  AppBillingRoute: typeof AppBillingRoute
+  AppBrandingRoute: typeof AppBrandingRoute
+  AppContentRoute: typeof AppContentRoute
+  AppDashboardRoute: typeof AppDashboardRoute
+  AppPackagesRoute: typeof AppPackagesRoute
+  AppProfileRoute: typeof AppProfileRoute
+  AppSettingsRoute: typeof AppSettingsRoute
+  AppSubscriptionRoute: typeof AppSubscriptionRoute
+  AppUsersRoute: typeof AppUsersRoute
+  AppWatchRoute: typeof AppWatchRoute
+  AppIndexRoute: typeof AppIndexRoute
 }
 
-const AdminRouteChildren: AdminRouteChildren = {
-  AdminAnalyticsRoute: AdminAnalyticsRoute,
-  AdminApiRoute: AdminApiRoute,
-  AdminAuditRoute: AdminAuditRoute,
-  AdminBillingRoute: AdminBillingRoute,
-  AdminCategoriesRoute: AdminCategoriesRoute,
-  AdminClientsRoute: AdminClientsRoute,
-  AdminContentRoute: AdminContentRoute,
-  AdminDevicesRoute: AdminDevicesRoute,
-  AdminLiveRoute: AdminLiveRoute,
-  AdminMonitoringRoute: AdminMonitoringRoute,
-  AdminNotificationsRoute: AdminNotificationsRoute,
-  AdminPackagesRoute: AdminPackagesRoute,
-  AdminPlaylistsRoute: AdminPlaylistsRoute,
-  AdminReportsRoute: AdminReportsRoute,
-  AdminRolesRoute: AdminRolesRoute,
-  AdminSchedulingRoute: AdminSchedulingRoute,
-  AdminSettingsRoute: AdminSettingsRoute,
-  AdminUsersRoute: AdminUsersRoute,
-  AdminWorkspacesRoute: AdminWorkspacesRoute,
-  AdminIndexRoute: AdminIndexRoute,
+const AppRouteChildren: AppRouteChildren = {
+  AppActivityRoute: AppActivityRoute,
+  AppBillingRoute: AppBillingRoute,
+  AppBrandingRoute: AppBrandingRoute,
+  AppContentRoute: AppContentRoute,
+  AppDashboardRoute: AppDashboardRoute,
+  AppPackagesRoute: AppPackagesRoute,
+  AppProfileRoute: AppProfileRoute,
+  AppSettingsRoute: AppSettingsRoute,
+  AppSubscriptionRoute: AppSubscriptionRoute,
+  AppUsersRoute: AppUsersRoute,
+  AppWatchRoute: AppWatchRoute,
+  AppIndexRoute: AppIndexRoute,
 }
 
-const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
-
-interface ClientRouteChildren {
-  ClientAnalyticsRoute: typeof ClientAnalyticsRoute
-  ClientApiRoute: typeof ClientApiRoute
-  ClientBillingRoute: typeof ClientBillingRoute
-  ClientCatalogueRoute: typeof ClientCatalogueRoute
-  ClientDevicesRoute: typeof ClientDevicesRoute
-  ClientLiveRoute: typeof ClientLiveRoute
-  ClientPlaylistsRoute: typeof ClientPlaylistsRoute
-  ClientSettingsRoute: typeof ClientSettingsRoute
-  ClientSubscriptionRoute: typeof ClientSubscriptionRoute
-  ClientSupportRoute: typeof ClientSupportRoute
-  ClientTeamRoute: typeof ClientTeamRoute
-  ClientIndexRoute: typeof ClientIndexRoute
-}
-
-const ClientRouteChildren: ClientRouteChildren = {
-  ClientAnalyticsRoute: ClientAnalyticsRoute,
-  ClientApiRoute: ClientApiRoute,
-  ClientBillingRoute: ClientBillingRoute,
-  ClientCatalogueRoute: ClientCatalogueRoute,
-  ClientDevicesRoute: ClientDevicesRoute,
-  ClientLiveRoute: ClientLiveRoute,
-  ClientPlaylistsRoute: ClientPlaylistsRoute,
-  ClientSettingsRoute: ClientSettingsRoute,
-  ClientSubscriptionRoute: ClientSubscriptionRoute,
-  ClientSupportRoute: ClientSupportRoute,
-  ClientTeamRoute: ClientTeamRoute,
-  ClientIndexRoute: ClientIndexRoute,
-}
-
-const ClientRouteWithChildren =
-  ClientRoute._addFileChildren(ClientRouteChildren)
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRoute: AdminRouteWithChildren,
-  ClientRoute: ClientRouteWithChildren,
+  AppRoute: AppRouteWithChildren,
+  AuthRoute: AuthRoute,
+  ApiPublicSeedAdminRoute: ApiPublicSeedAdminRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
