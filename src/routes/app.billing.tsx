@@ -41,7 +41,7 @@ function BillingPage() {
       }
 
       const byPlan = new Map<string, number>();
-      active.forEach((s: any) => { const n = s.packages?.name ?? "—"; byPlan.set(n, (byPlan.get(n) ?? 0) + Number(s.packages?.price_monthly ?? 0)); });
+      active.forEach((s: any) => { const n = s.packages?.name ?? "-"; byPlan.set(n, (byPlan.get(n) ?? 0) + Number(s.packages?.price_monthly ?? 0)); });
       return {
         subs: rows, active, mrr, totalCollected, months,
         planShare: Array.from(byPlan, ([name, value]) => ({ name, value })),
@@ -127,12 +127,12 @@ function BillingPage() {
             <TableBody>
               {(data?.subs ?? []).map((s: any) => (
                 <TableRow key={s.id} className="hover:bg-muted/30">
-                  <TableCell className="font-mono text-xs">{s.receipt_id ?? "—"}</TableCell>
+                  <TableCell className="font-mono text-xs">{s.receipt_id ?? "-"}</TableCell>
                   <TableCell className="font-medium">{s.profiles?.full_name ?? s.profiles?.email}</TableCell>
                   <TableCell>{s.packages?.name}</TableCell>
                   <TableCell className="font-semibold">{ksh(Number(s.amount_paid ?? s.packages?.price_monthly ?? 0))}</TableCell>
                   <TableCell><Badge variant={s.status === "active" ? "default" : "secondary"}>{s.status}</Badge></TableCell>
-                  <TableCell className="text-xs text-muted-foreground">{s.payment_method ?? "—"}</TableCell>
+                  <TableCell className="text-xs text-muted-foreground">{s.payment_method ?? "-"}</TableCell>
                   <TableCell className="whitespace-nowrap text-right text-xs text-muted-foreground">{format(new Date(s.started_at), "MMM d, yyyy · HH:mm")}</TableCell>
                 </TableRow>
               ))}

@@ -61,7 +61,7 @@ function AdminDashboard() {
       const cats = new Map<string, number>();
       (content.data ?? []).forEach((c: any) => cats.set(c.content_type ?? "video", (cats.get(c.content_type ?? "video") ?? 0) + 1));
       const planCounts = new Map<string, number>();
-      (subs.data ?? []).forEach((s: any) => { const n = s.packages?.name ?? "—"; planCounts.set(n, (planCounts.get(n) ?? 0) + 1); });
+      (subs.data ?? []).forEach((s: any) => { const n = s.packages?.name ?? "-"; planCounts.set(n, (planCounts.get(n) ?? 0) + 1); });
       return {
         userCount: users.count ?? 0,
         contentCount: content.count ?? 0,
@@ -98,10 +98,10 @@ function AdminDashboard() {
       </div>
 
       <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
-        <KpiCard label="Total Users" value={data?.userCount ?? "—"} icon={Users} />
-        <KpiCard label="Content" value={data?.contentCount ?? "—"} icon={Film} tint="info" />
-        <KpiCard label="Packages" value={data?.packageCount ?? "—"} icon={Package} tint="success" />
-        <KpiCard label="Active Subs" value={data?.activeSubs ?? "—"} icon={Sparkles} tint="warning" />
+        <KpiCard label="Total Users" value={data?.userCount ?? "-"} icon={Users} />
+        <KpiCard label="Content" value={data?.contentCount ?? "-"} icon={Film} tint="info" />
+        <KpiCard label="Packages" value={data?.packageCount ?? "-"} icon={Package} tint="success" />
+        <KpiCard label="Active Subs" value={data?.activeSubs ?? "-"} icon={Sparkles} tint="warning" />
         <KpiCard label="MRR" value={ksh(data?.mrr ?? 0)} icon={CreditCard} sub="Monthly recurring" />
         <KpiCard label="Activity (200)" value={data?.recentActivity ?? 0} icon={Activity} tint="info" sub="Last events" />
       </div>
@@ -252,10 +252,10 @@ function ClientDashboard() {
           {active && (
             <div className="rounded-2xl bg-white/15 p-5 backdrop-blur">
               <div className="text-xs uppercase tracking-widest opacity-80">Renews / expires</div>
-              <div className="mt-1 text-2xl font-bold">{expiresAt ? expiresAt.toLocaleDateString() : "—"}</div>
+              <div className="mt-1 text-2xl font-bold">{expiresAt ? expiresAt.toLocaleDateString() : "-"}</div>
               {daysLeft !== null && <div className="mt-1 text-sm opacity-90">{daysLeft} days remaining</div>}
               <div className="mt-3 text-xs opacity-80">
-                {ksh(Number(data?.sub?.packages?.price_monthly ?? 0))} / mo · up to {data?.sub?.packages?.max_streams ?? "—"} streams
+                {ksh(Number(data?.sub?.packages?.price_monthly ?? 0))} / mo · up to {data?.sub?.packages?.max_streams ?? "-"} streams
               </div>
             </div>
           )}

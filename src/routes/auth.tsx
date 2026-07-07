@@ -15,7 +15,7 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
   head: () => ({
     meta: [
-      { title: "Sign in — Digistream" },
+      { title: "Sign in - Digistream" },
       { name: "description", content: "Access your Digistream streaming workspace." },
     ],
   }),
@@ -56,14 +56,14 @@ function AuthPage() {
     });
     setBusy(false);
     if (error) return toast.error(error.message);
-    toast.success("Account created — signing you in");
+    toast.success("Account created - signing you in");
     const { error: e2 } = await supabase.auth.signInWithPassword({ email, password });
     if (!e2) navigate({ to: "/app" });
   };
 
   return (
     <div className="grid min-h-screen grid-cols-1 lg:grid-cols-2">
-      {/* Left visual — no orange overlay, subtle bottom darkening */}
+      {/* Left visual - no orange overlay, subtle bottom darkening */}
       <div className="relative hidden overflow-hidden lg:block">
         <img src={authBg.url} alt="" className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/55 via-black/25 to-transparent" />
@@ -73,7 +73,7 @@ function AuthPage() {
               Stream what matters, to whoever needs it.
             </h2>
             <p className="mt-4 text-white/95 drop-shadow">
-              Digistream powers licensed content distribution — packaged, priced and delivered to the screens your customers subscribe to.
+              Digistream powers licensed content distribution - packaged, priced and delivered to the screens your customers subscribe to.
             </p>
           </div>
         </div>

@@ -49,9 +49,9 @@ function UsersPage() {
             <TableBody>
               {(data ?? []).map((u: any) => (
                 <TableRow key={u.id}>
-                  <TableCell className="font-medium">{u.full_name || "—"}</TableCell>
+                  <TableCell className="font-medium">{u.full_name || "-"}</TableCell>
                   <TableCell className="text-muted-foreground">{u.email}</TableCell>
-                  <TableCell><Badge variant={u.role === "admin" ? "default" : "secondary"} className="capitalize">{u.role ?? "—"}</Badge></TableCell>
+                  <TableCell><Badge variant={u.role === "admin" ? "default" : "secondary"} className="capitalize">{u.role ?? "-"}</Badge></TableCell>
                   <TableCell>{u.plan ?? <span className="text-muted-foreground">No plan</span>}</TableCell>
                   <TableCell className="text-muted-foreground">{u.created_at && format(new Date(u.created_at), "MMM d, yyyy")}</TableCell>
                 </TableRow>
