@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Brand } from "@/components/brand";
-import authBg from "@/assets/auth-bg.asset.json";
+const AUTH_BG_URL = "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=2000&q=80";
 
 export const Route = createFileRoute("/auth")({
   component: AuthPage,
@@ -65,7 +65,7 @@ function AuthPage() {
     <div className="grid min-h-screen grid-cols-1 lg:grid-cols-2">
       {/* Left visual - no orange overlay, subtle bottom darkening */}
       <div className="relative hidden overflow-hidden lg:block">
-        <img src={authBg.url} alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <img src={AUTH_BG_URL} alt="" className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/55 via-black/25 to-transparent" />
         <div className="relative flex h-full flex-col justify-end p-12 text-white">
           <div className="max-w-md">
