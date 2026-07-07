@@ -84,7 +84,7 @@ function ProfilePage() {
   if (isLoading) return <div className="flex justify-center p-12"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>;
 
   const initials = (form.full_name || user?.email || "?").slice(0, 2).toUpperCase();
-  const created = (data as any)?.created_at ? format(new Date((data as any).created_at), "MMM d, yyyy") : "—";
+  const created = (data as any)?.created_at ? format(new Date((data as any).created_at), "MMM d, yyyy") : "-";
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">

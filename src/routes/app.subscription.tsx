@@ -60,7 +60,7 @@ function SubscriptionPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Subscription</h1>
-        <p className="text-sm text-muted-foreground">Pick a plan or upgrade anytime — you keep your access until the current period ends.</p>
+        <p className="text-sm text-muted-foreground">Pick a plan or upgrade anytime - you keep your access until the current period ends.</p>
       </div>
 
       {mine && (
@@ -132,7 +132,7 @@ function SubscriptionPage() {
               <div key={h.id} className="flex items-center justify-between py-3">
                 <div>
                   <div className="text-sm font-semibold">{h.packages?.name}</div>
-                  <div className="text-xs text-muted-foreground font-mono">{h.receipt_id ?? "—"}</div>
+                  <div className="text-xs text-muted-foreground font-mono">{h.receipt_id ?? "-"}</div>
                 </div>
                 <div className="text-right">
                   <div className="text-sm font-semibold">{ksh(Number(h.amount_paid ?? h.packages?.price_monthly ?? 0))}</div>
@@ -175,7 +175,7 @@ function CheckoutDialog({ pkg, user, currentSub, onClose, onPaid }: { pkg: any; 
     const expires = new Date(now.getTime() + 30 * 86400000);
     const receiptId = "rcpt_" + Math.random().toString(36).slice(2, 12).toUpperCase();
 
-    // If there's an active sub with a future expiry, keep access — mark old as cancelled but new one starts now.
+    // If there's an active sub with a future expiry, keep access - mark old as cancelled but new one starts now.
     if (currentSub) {
       await supabase.from("subscriptions").update({ status: "cancelled" }).eq("id", currentSub.id);
     }
@@ -232,7 +232,7 @@ function CheckoutDialog({ pkg, user, currentSub, onClose, onPaid }: { pkg: any; 
 function ReceiptDialog({ receipt, onClose }: { receipt: any; onClose: () => void }) {
   const download = () => {
     const lines = [
-      "DIGISTREAM — PAYMENT RECEIPT",
+      "DIGISTREAM - PAYMENT RECEIPT",
       "==============================",
       `Receipt: ${receipt.receipt_id}`,
       `Date:    ${format(new Date(receipt.started_at), "MMM d, yyyy HH:mm")}`,

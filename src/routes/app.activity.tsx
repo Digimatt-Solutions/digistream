@@ -106,7 +106,7 @@ function ActivityPage() {
                       </span>
                     </TableCell>
                     <TableCell>
-                      <div className="text-sm font-medium">{l.entity ?? "—"}</div>
+                      <div className="text-sm font-medium">{l.entity ?? "-"}</div>
                       {l.page && <div className="text-[11px] text-muted-foreground font-mono">{l.page}</div>}
                     </TableCell>
                     <TableCell className="whitespace-nowrap text-right text-xs text-muted-foreground">
