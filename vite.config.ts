@@ -3,13 +3,17 @@
 //   - tanstackStart, viteReact, tailwindcss, tsConfigPaths, nitro (build-only using cloudflare as a default target),
 //     componentTagger (dev-only), VITE_* env injection, @ path alias, React/TanStack dedupe,
 //     error logger plugins, and sandbox detection (port/host/strictPort).
-// You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+
+// Allow Netlify (or any external CI) to override the Nitro preset via NITRO_PRESET.
+// On Netlify, netlify.toml sets NITRO_PRESET=netlify so Nitro emits Netlify Functions
+// + a static `dist` directory. Inside the Lovable editor the preset is forced to
+// Cloudflare, so this override is a no-op there.
+const nitroPreset = process.env.NITRO_PRESET;
 
 export default defineConfig({
   tanstackStart: {
-    // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
-    // nitro/vite builds from this
     server: { entry: "server" },
   },
+  ...(nitroPreset ? { nitro: { preset: nitroPreset } } : {}),
 });
