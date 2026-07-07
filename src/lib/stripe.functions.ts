@@ -1,6 +1,4 @@
 import { createServerFn } from "@tanstack/react-start";
-import { createClient } from "@supabase/supabase-js";
-import type { Database } from "@/integrations/supabase/types";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 // Create a Stripe Checkout Session (test or live depending on key). Returns hosted URL.
@@ -61,6 +59,3 @@ export const confirmStripeCheckout = createServerFn({ method: "POST" })
       customer_email: json.customer_details?.email ?? null,
     };
   });
-
-// Unused import fix - keeping createClient available for future public reads
-void createClient<Database>;
