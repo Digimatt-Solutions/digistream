@@ -50,9 +50,10 @@ function ProfilePage() {
     const { error } = await supabase.from("profiles").upsert({
       id: user.id, email: user.email!,
       full_name: form.full_name, company: form.company, phone: form.phone,
+      bio: form.bio,
       avatar_url: avatarPath,
       updated_at: new Date().toISOString(),
-    });
+    } as never);
     setSaving(false);
     if (error) return toast.error(error.message);
     toast.success("Profile updated");
