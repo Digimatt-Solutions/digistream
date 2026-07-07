@@ -1,0 +1,11 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NITRO_PRESET = "netlify"
+  NODE_VERSION = "20"
+
+# Nitro's Netlify preset emits serverless functions into .netlify/functions-internal
+# and static assets into dist. The redirects below are handled by the preset's
+# generated _redirects file inside dist, so no extra rules are needed here.
