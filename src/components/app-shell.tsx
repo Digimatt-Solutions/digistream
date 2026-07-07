@@ -108,9 +108,14 @@ export function AppShell({ children }: { children: ReactNode }) {
     </div>
   );
 
+  const sidebarWidth = collapsed ? "4rem" : "16rem";
+
   return (
-    <div className="flex min-h-screen bg-background">
-      <aside className={cn("hidden shrink-0 border-r border-sidebar-border transition-all lg:block", collapsed ? "w-16" : "w-64")}>
+    <div className="min-h-screen bg-background">
+      <aside
+        className="fixed inset-y-0 left-0 z-40 hidden border-r border-sidebar-border transition-all lg:block"
+        style={{ width: sidebarWidth }}
+      >
         <SidebarBody compact={collapsed} />
       </aside>
 
@@ -121,7 +126,11 @@ export function AppShell({ children }: { children: ReactNode }) {
         </SheetContent>
       </Sheet>
 
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div
+        className="flex min-h-screen flex-col transition-all"
+        style={{ paddingLeft: `var(--dg-sb, 0px)` } as React.CSSProperties}
+      >
+        <style>{`@media (min-width: 1024px) { :root { --dg-sb: ${sidebarWidth}; } }`}</style>
         <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-border bg-card/90 px-4 backdrop-blur lg:px-6">
           <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setMobileOpen(true)}>
             <Menu className="h-5 w-5" />
@@ -149,7 +158,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 )}
                 <div className="hidden text-left sm:block">
                   <div className="text-sm font-semibold leading-tight">{displayName}</div>
-                  <div className="text-[11px] capitalize text-muted-foreground">{role ?? "…"}</div>
+                  <div className="text-[11px] capitalize text-muted-foreground">{role ?? "..."}</div>
                 </div>
                 <ChevronDown className="h-4 w-4 text-muted-foreground" />
               </button>

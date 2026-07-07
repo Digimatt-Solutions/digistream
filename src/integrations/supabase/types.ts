@@ -17,57 +17,105 @@ export type Database = {
       activity_logs: {
         Row: {
           action: string
+          browser: string | null
+          country: string | null
           created_at: string
           details: Json | null
+          device: string | null
           entity: string | null
           id: string
+          ip_hash: string | null
+          os: string | null
           page: string | null
+          user_agent: string | null
           user_id: string | null
         }
         Insert: {
           action: string
+          browser?: string | null
+          country?: string | null
           created_at?: string
           details?: Json | null
+          device?: string | null
           entity?: string | null
           id?: string
+          ip_hash?: string | null
+          os?: string | null
           page?: string | null
+          user_agent?: string | null
           user_id?: string | null
         }
         Update: {
           action?: string
+          browser?: string | null
+          country?: string | null
           created_at?: string
           details?: Json | null
+          device?: string | null
           entity?: string | null
           id?: string
+          ip_hash?: string | null
+          os?: string | null
           page?: string | null
+          user_agent?: string | null
           user_id?: string | null
         }
         Relationships: []
       }
       client_brands: {
         Row: {
+          accent_color: string | null
+          background_type: string | null
           brand_name: string | null
+          default_thumbnail_url: string | null
+          font_family: string | null
           logo_url: string | null
+          player_title: string | null
           primary_color: string | null
+          secondary_color: string | null
+          support_email: string | null
           tagline: string | null
+          theme_mode: string | null
           updated_at: string
           user_id: string
+          website_url: string | null
+          welcome_message: string | null
         }
         Insert: {
+          accent_color?: string | null
+          background_type?: string | null
           brand_name?: string | null
+          default_thumbnail_url?: string | null
+          font_family?: string | null
           logo_url?: string | null
+          player_title?: string | null
           primary_color?: string | null
+          secondary_color?: string | null
+          support_email?: string | null
           tagline?: string | null
+          theme_mode?: string | null
           updated_at?: string
           user_id: string
+          website_url?: string | null
+          welcome_message?: string | null
         }
         Update: {
+          accent_color?: string | null
+          background_type?: string | null
           brand_name?: string | null
+          default_thumbnail_url?: string | null
+          font_family?: string | null
           logo_url?: string | null
+          player_title?: string | null
           primary_color?: string | null
+          secondary_color?: string | null
+          support_email?: string | null
           tagline?: string | null
+          theme_mode?: string | null
           updated_at?: string
           user_id?: string
+          website_url?: string | null
+          welcome_message?: string | null
         }
         Relationships: []
       }
@@ -179,6 +227,7 @@ export type Database = {
       profiles: {
         Row: {
           avatar_url: string | null
+          bio: string | null
           company: string | null
           created_at: string
           email: string
@@ -189,6 +238,7 @@ export type Database = {
         }
         Insert: {
           avatar_url?: string | null
+          bio?: string | null
           company?: string | null
           created_at?: string
           email: string
@@ -199,6 +249,7 @@ export type Database = {
         }
         Update: {
           avatar_url?: string | null
+          bio?: string | null
           company?: string | null
           created_at?: string
           email?: string

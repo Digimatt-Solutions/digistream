@@ -50,9 +50,10 @@ function ProfilePage() {
     const { error } = await supabase.from("profiles").upsert({
       id: user.id, email: user.email!,
       full_name: form.full_name, company: form.company, phone: form.phone,
+      bio: form.bio,
       avatar_url: avatarPath,
       updated_at: new Date().toISOString(),
-    });
+    } as never);
     setSaving(false);
     if (error) return toast.error(error.message);
     toast.success("Profile updated");
@@ -147,6 +148,13 @@ function ProfilePage() {
           <div className="md:col-span-2"><Label>Bio</Label><Textarea className="mt-1.5" value={form.bio} onChange={(e) => setForm({ ...form, bio: e.target.value })} rows={3} placeholder="Tell us about yourself" /></div>
         </div>
       </Card>
+
+      {form.bio && (
+        <Card className="rounded-2xl p-6 shadow-[var(--shadow-card)]">
+          <h3 className="font-semibold">About</h3>
+          <p className="mt-2 whitespace-pre-line text-sm text-muted-foreground">{form.bio}</p>
+        </Card>
+      )}
     </div>
   );
 }
