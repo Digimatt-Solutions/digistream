@@ -1,22 +1,26 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useSearch } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useSession } from "@/lib/session";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { Check, Loader2, Sparkles, Zap, Crown, CreditCard, Lock, ShieldCheck, Download, CheckCircle2 } from "lucide-react";
+import { Check, Loader2, Sparkles, Zap, Crown, CreditCard, ShieldCheck, Download, CheckCircle2, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
 import { ksh } from "@/lib/currency";
 import { logAction } from "@/lib/activity";
 import { format } from "date-fns";
+import { createStripeCheckout, confirmStripeCheckout } from "@/lib/stripe.functions";
 
 export const Route = createFileRoute("/app/subscription")({
   component: SubscriptionPage,
+  validateSearch: (s: Record<string, unknown>) => ({
+    stripe: (s.stripe as string) || undefined,
+    pkg: (s.pkg as string) || undefined,
+    sid: (s.sid as string) || undefined,
+  }),
 });
 
 const ICONS = [Zap, Sparkles, Crown];
@@ -51,6 +55,41 @@ function SubscriptionPage() {
 
   const [checkoutPkg, setCheckoutPkg] = useState<any | null>(null);
   const [receipt, setReceipt] = useState<any | null>(null);
+  const search = useSearch({ from: "/app/subscription" });
+
+  // Handle Stripe redirect return
+  useEffect(() => {
+    if (search.stripe !== "success" || !search.sid || !search.pkg || !user) return;
+    (async () => {
+      try {
+        const conf = await confirmStripeCheckout({ data: { session_id: search.sid! } });
+        if (conf.payment_status !== "paid") { toast.error("Payment not completed"); return; }
+        const pkg = (packages ?? []).find((p: any) => p.id === search.pkg);
+        if (!pkg) return;
+        const now = new Date();
+        const expires = new Date(now.getTime() + 30 * 86400000);
+        if (mine) await supabase.from("subscriptions").update({ status: "cancelled" }).eq("id", mine.id);
+        const { data } = await supabase.from("subscriptions").insert({
+          user_id: user.id, package_id: pkg.id, status: "active",
+          started_at: now.toISOString(), expires_at: expires.toISOString(),
+          amount_paid: conf.amount_total, currency: conf.currency,
+          payment_method: "Stripe", receipt_id: conf.id,
+        }).select("*, packages(name, price_monthly)").single();
+        toast.success("Payment successful");
+        logAction(user.id, "payment.completed", pkg.name, { amount: conf.amount_total, receipt: conf.id });
+        setReceipt({ ...data, userEmail: conf.customer_email });
+        qc.invalidateQueries();
+        window.history.replaceState({}, "", "/app/subscription");
+      } catch (e: any) {
+        toast.error(e.message ?? "Could not confirm payment");
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search.stripe, search.sid, search.pkg, user?.id, packages]);
+
+  useEffect(() => {
+    if (search.stripe === "cancel") { toast.info("Payment cancelled"); window.history.replaceState({}, "", "/app/subscription"); }
+  }, [search.stripe]);
 
   const currentPrice = Number(mine?.packages?.price_monthly ?? 0);
   const activeExpires = mine?.expires_at ? new Date(mine.expires_at) : null;
@@ -162,66 +201,37 @@ function SubscriptionPage() {
   );
 }
 
-function CheckoutDialog({ pkg, user, currentSub, onClose, onPaid }: { pkg: any; user: any; currentSub: any; onClose: () => void; onPaid: (r: any) => void }) {
-  const [card, setCard] = useState({ number: "4242 4242 4242 4242", exp: "12/28", cvc: "123", name: "" });
+function CheckoutDialog({ pkg, onClose }: { pkg: any; user: any; currentSub: any; onClose: () => void; onPaid: (r: any) => void }) {
   const [busy, setBusy] = useState(false);
 
-  const pay = async () => {
-    if (!user) return;
+  const go = async () => {
     setBusy(true);
-    // Simulate Stripe test charge
-    await new Promise((r) => setTimeout(r, 1400));
-    const now = new Date();
-    const expires = new Date(now.getTime() + 30 * 86400000);
-    const receiptId = "rcpt_" + Math.random().toString(36).slice(2, 12).toUpperCase();
-
-    // If there's an active sub with a future expiry, keep access - mark old as cancelled but new one starts now.
-    if (currentSub) {
-      await supabase.from("subscriptions").update({ status: "cancelled" }).eq("id", currentSub.id);
+    try {
+      const { url } = await createStripeCheckout({ data: { package_id: pkg.id, origin: window.location.origin } });
+      window.location.href = url;
+    } catch (e: any) {
+      setBusy(false);
+      toast.error(e.message ?? "Could not start checkout");
     }
-    const { data, error } = await supabase.from("subscriptions").insert({
-      user_id: user.id,
-      package_id: pkg.id,
-      status: "active",
-      started_at: now.toISOString(),
-      expires_at: expires.toISOString(),
-      amount_paid: Number(pkg.price_monthly),
-      currency: "KES",
-      payment_method: "Card (Stripe test)",
-      receipt_id: receiptId,
-    }).select("*, packages(name, price_monthly)").single();
-    setBusy(false);
-    if (error) return toast.error(error.message);
-    toast.success("Payment successful");
-    logAction(user.id, "payment.completed", pkg.name, { amount: Number(pkg.price_monthly), receipt: receiptId });
-    onPaid({ ...data, cardLast4: card.number.slice(-4), userEmail: user.email });
   };
 
   return (
     <Dialog open onOpenChange={onClose}>
       <DialogContent className="max-w-md">
-        <DialogHeader><DialogTitle className="flex items-center gap-2"><CreditCard className="h-5 w-5 text-primary" /> Complete payment</DialogTitle></DialogHeader>
+        <DialogHeader><DialogTitle className="flex items-center gap-2"><CreditCard className="h-5 w-5 text-primary" /> Confirm checkout</DialogTitle></DialogHeader>
         <div className="rounded-xl bg-secondary p-4">
           <div className="flex items-center justify-between text-sm"><span className="text-muted-foreground">Plan</span><span className="font-semibold">{pkg.name}</span></div>
           <div className="mt-1 flex items-center justify-between text-sm"><span className="text-muted-foreground">Billed today</span><span className="text-lg font-bold">{ksh(Number(pkg.price_monthly))}</span></div>
           <div className="mt-1 flex items-center justify-between text-xs text-muted-foreground"><span>Access</span><span>30 days</span></div>
         </div>
-        <div className="space-y-3">
-          <div><Label>Cardholder name</Label><Input className="mt-1.5" value={card.name} onChange={(e) => setCard({ ...card, name: e.target.value })} placeholder="Full name on card" /></div>
-          <div><Label>Card number</Label><Input className="mt-1.5 font-mono" value={card.number} onChange={(e) => setCard({ ...card, number: e.target.value })} /></div>
-          <div className="grid grid-cols-2 gap-3">
-            <div><Label>Expiry</Label><Input className="mt-1.5 font-mono" value={card.exp} onChange={(e) => setCard({ ...card, exp: e.target.value })} placeholder="MM/YY" /></div>
-            <div><Label>CVC</Label><Input className="mt-1.5 font-mono" value={card.cvc} onChange={(e) => setCard({ ...card, cvc: e.target.value })} /></div>
-          </div>
-        </div>
-        <div className="flex items-center gap-2 rounded-lg bg-muted p-2.5 text-xs text-muted-foreground">
-          <ShieldCheck className="h-4 w-4 text-success" />
-          <span>Test mode · use <span className="font-mono">4242 4242 4242 4242</span> · no real charge.</span>
+        <div className="flex items-start gap-2 rounded-lg bg-muted p-3 text-xs text-muted-foreground">
+          <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-success" />
+          <span>You will be redirected to Stripe's secure checkout. In test mode use card <span className="font-mono">4242 4242 4242 4242</span>, any future expiry and any CVC.</span>
         </div>
         <DialogFooter>
           <Button variant="ghost" onClick={onClose} disabled={busy}>Cancel</Button>
-          <Button onClick={pay} disabled={busy} className="min-w-40">
-            {busy ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Processing…</> : <><Lock className="mr-2 h-4 w-4" />Pay {ksh(Number(pkg.price_monthly))}</>}
+          <Button onClick={go} disabled={busy} className="min-w-48">
+            {busy ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Redirecting...</> : <><ExternalLink className="mr-2 h-4 w-4" />Continue to Stripe</>}
           </Button>
         </DialogFooter>
       </DialogContent>
