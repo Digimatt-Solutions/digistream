@@ -5,6 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --font-sans: "Quicksand", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Quicksand", ui-sans-serif, system-ui, sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -146,6 +148,9 @@
 @layer base {
   * {
     border-color: var(--color-border);
+  }
+  html, body {
+    font-family: "Quicksand", ui-sans-serif, system-ui, sans-serif;
   }
   body {
     background-color: var(--color-background);

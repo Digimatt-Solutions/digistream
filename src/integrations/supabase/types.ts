@@ -21,6 +21,7 @@ export type Database = {
           details: Json | null
           entity: string | null
           id: string
+          page: string | null
           user_id: string | null
         }
         Insert: {
@@ -29,6 +30,7 @@ export type Database = {
           details?: Json | null
           entity?: string | null
           id?: string
+          page?: string | null
           user_id?: string | null
         }
         Update: {
@@ -37,6 +39,7 @@ export type Database = {
           details?: Json | null
           entity?: string | null
           id?: string
+          page?: string | null
           user_id?: string | null
         }
         Relationships: []
@@ -71,33 +74,42 @@ export type Database = {
       content: {
         Row: {
           active: boolean
+          artist: string | null
           category: string | null
+          content_type: string | null
           created_at: string
           description: string | null
           duration_seconds: number | null
           id: string
+          release_year: number | null
           stream_url: string | null
           thumbnail_url: string | null
           title: string
         }
         Insert: {
           active?: boolean
+          artist?: string | null
           category?: string | null
+          content_type?: string | null
           created_at?: string
           description?: string | null
           duration_seconds?: number | null
           id?: string
+          release_year?: number | null
           stream_url?: string | null
           thumbnail_url?: string | null
           title: string
         }
         Update: {
           active?: boolean
+          artist?: string | null
           category?: string | null
+          content_type?: string | null
           created_at?: string
           description?: string | null
           duration_seconds?: number | null
           id?: string
+          release_year?: number | null
           stream_url?: string | null
           thumbnail_url?: string | null
           title?: string
@@ -199,27 +211,42 @@ export type Database = {
       }
       subscriptions: {
         Row: {
+          amount_paid: number | null
           created_at: string
+          currency: string | null
+          expires_at: string | null
           id: string
           package_id: string
+          payment_method: string | null
+          receipt_id: string | null
           renews_at: string | null
           started_at: string
           status: string
           user_id: string
         }
         Insert: {
+          amount_paid?: number | null
           created_at?: string
+          currency?: string | null
+          expires_at?: string | null
           id?: string
           package_id: string
+          payment_method?: string | null
+          receipt_id?: string | null
           renews_at?: string | null
           started_at?: string
           status?: string
           user_id: string
         }
         Update: {
+          amount_paid?: number | null
           created_at?: string
+          currency?: string | null
+          expires_at?: string | null
           id?: string
           package_id?: string
+          payment_method?: string | null
+          receipt_id?: string | null
           renews_at?: string | null
           started_at?: string
           status?: string

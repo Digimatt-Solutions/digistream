@@ -1,19 +1,23 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
+import { useQuery } from "@tanstack/react-query";
 import type { LucideIcon } from "lucide-react";
 import {
   LayoutDashboard, Users, Activity, CreditCard, Film, Package, User, Settings,
   Menu, Bell, LogOut, ChevronDown, PlayCircle, Palette, Sparkles,
 } from "lucide-react";
 import { useSession } from "@/lib/session";
+import { supabase } from "@/integrations/supabase/client";
 import { Brand } from "@/components/brand";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useAvatarUrl } from "@/lib/avatar";
+import { usePageTracking } from "@/lib/activity";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem,
   DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { toast } from "sonner";
 
 interface NavItem { label: string; to: string; icon: LucideIcon }
@@ -44,10 +48,18 @@ export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [mobileOpen, setMobileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
+  usePageTracking();
+
+  const { data: profile } = useQuery({
+    queryKey: ["profile-lite", user?.id],
+    queryFn: async () => (await supabase.from("profiles").select("full_name, avatar_url").eq("id", user!.id).maybeSingle()).data,
+    enabled: !!user,
+  });
+  const avatarUrl = useAvatarUrl(profile?.avatar_url);
 
   const nav = role === "admin" ? ADMIN_NAV : CLIENT_NAV;
-  const initials = (user?.user_metadata?.full_name ?? user?.email ?? "?")
-    .split(" ").map((s: string) => s[0]).slice(0, 2).join("").toUpperCase();
+  const displayName = profile?.full_name || user?.user_metadata?.full_name || user?.email?.split("@")[0] || "Account";
+  const initials = displayName.split(" ").map((s: string) => s[0]).slice(0, 2).join("").toUpperCase();
 
   const handleSignOut = async () => {
     await signOut();
@@ -70,10 +82,10 @@ export function AppShell({ children }: { children: ReactNode }) {
               to={item.to}
               onClick={() => setMobileOpen(false)}
               className={cn(
-                "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition",
+                "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition",
                 compact && "justify-center px-2",
                 active
-                  ? "bg-primary/10 font-medium text-primary"
+                  ? "bg-primary/10 text-primary shadow-sm"
                   : "text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
               )}
             >
@@ -98,14 +110,13 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex min-h-screen bg-background">
-      {/* Desktop sidebar */}
       <aside className={cn("hidden shrink-0 border-r border-sidebar-border transition-all lg:block", collapsed ? "w-16" : "w-64")}>
         <SidebarBody compact={collapsed} />
       </aside>
 
-      {/* Mobile drawer */}
       <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
         <SheetContent side="left" className="w-64 p-0">
+          <SheetHeader className="sr-only"><SheetTitle>Navigation</SheetTitle></SheetHeader>
           <SidebarBody />
         </SheetContent>
       </Sheet>
@@ -120,7 +131,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </Button>
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm text-muted-foreground">
-              Welcome, <span className="font-medium text-foreground">{user?.user_metadata?.full_name ?? user?.email?.split("@")[0]}</span>
+              Welcome, <span className="font-semibold text-foreground">{displayName}</span>
             </p>
           </div>
           <Button variant="ghost" size="icon" className="rounded-lg">
@@ -128,20 +139,24 @@ export function AppShell({ children }: { children: ReactNode }) {
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="flex items-center gap-2 rounded-lg p-1 pr-2 hover:bg-secondary">
-                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
-                  {initials}
-                </div>
+              <button className="flex items-center gap-2.5 rounded-full border border-border bg-card p-1 pr-3 shadow-sm transition hover:border-primary/40 hover:shadow-md">
+                {avatarUrl ? (
+                  <img src={avatarUrl} alt="" className="h-9 w-9 rounded-full object-cover ring-2 ring-primary/20" />
+                ) : (
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-glow text-sm font-bold text-primary-foreground ring-2 ring-primary/20">
+                    {initials}
+                  </div>
+                )}
                 <div className="hidden text-left sm:block">
-                  <div className="text-sm font-medium leading-tight">{user?.user_metadata?.full_name ?? "Account"}</div>
-                  <div className="text-xs capitalize text-muted-foreground">{role ?? "…"}</div>
+                  <div className="text-sm font-semibold leading-tight">{displayName}</div>
+                  <div className="text-[11px] capitalize text-muted-foreground">{role ?? "…"}</div>
                 </div>
                 <ChevronDown className="h-4 w-4 text-muted-foreground" />
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuLabel>
-                <div className="font-medium">{user?.user_metadata?.full_name ?? "Account"}</div>
+                <div className="font-medium">{displayName}</div>
                 <div className="text-xs font-normal text-muted-foreground">{user?.email}</div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
