@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-const ADMIN_EMAIL = "admin@digistraming.com";
+const ADMIN_EMAIL = "admin@digistreaming.com";
 const ADMIN_PASSWORD = "0206White!";
 
 export const Route = createFileRoute("/api/public/seed-admin")({
