@@ -46,10 +46,15 @@ function WatchPage() {
     const s = search.toLowerCase();
     return content.filter((c: any) => `${c.title} ${c.artist ?? ""} ${c.category ?? ""}`.toLowerCase().includes(s));
   }, [content, search]);
+  const TYPE_ORDER = ["mix", "song", "video", "podcast", "live"] as const;
   const grouped = useMemo(() => {
     const g: Record<string, any[]> = {};
     filtered.forEach((c: any) => { (g[c.content_type ?? "video"] ||= []).push(c); });
-    return g;
+    // return in fixed order: mixes first, then songs, then videos
+    const ordered: [string, any[]][] = [];
+    TYPE_ORDER.forEach((t) => { if (g[t]?.length) ordered.push([t, g[t]]); });
+    Object.keys(g).forEach((k) => { if (!TYPE_ORDER.includes(k as never)) ordered.push([k, g[k]]); });
+    return ordered;
   }, [filtered]);
 
   const brandColor = brand?.primary_color || "#f97316";
@@ -145,8 +150,8 @@ function WatchPage() {
         </div>
       </div>
 
-      {/* Rows by type */}
-      {Object.entries(grouped).map(([type, items]) => (
+      {/* Rows by type: mixes, songs, videos */}
+      {grouped.map(([type, items]) => (
         <Row key={type} type={type} items={items} onPlay={setSelected} brandColor={brandColor} selectedId={selected?.id} />
       ))}
     </div>
