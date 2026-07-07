@@ -1,74 +1,150 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useSession } from "@/lib/session";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Loader2 } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
+import { Loader2, Camera, Mail, Phone, Building2, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
+import { useAvatarUrl, uploadAvatar } from "@/lib/avatar";
+import { logAction } from "@/lib/activity";
+import { format } from "date-fns";
 
 export const Route = createFileRoute("/app/profile")({
   component: ProfilePage,
 });
 
 function ProfilePage() {
-  const { user } = useSession();
+  const { user, role } = useSession();
   const qc = useQueryClient();
+  const fileInput = useRef<HTMLInputElement>(null);
+
   const { data, isLoading } = useQuery({
     queryKey: ["profile", user?.id],
-    queryFn: async () => {
-      const { data } = await supabase.from("profiles").select("*").eq("id", user!.id).maybeSingle();
-      return data;
-    },
+    queryFn: async () => (await supabase.from("profiles").select("*").eq("id", user!.id).maybeSingle()).data,
     enabled: !!user,
   });
 
-  const [form, setForm] = useState({ full_name: "", company: "", phone: "", avatar_url: "" });
+  const [form, setForm] = useState({ full_name: "", company: "", phone: "", bio: "" });
+  const [avatarPath, setAvatarPath] = useState<string | null>(null);
+  const avatarDisplay = useAvatarUrl(avatarPath);
+
   useEffect(() => {
-    if (data) setForm({ full_name: data.full_name ?? "", company: data.company ?? "", phone: data.phone ?? "", avatar_url: data.avatar_url ?? "" });
+    if (data) {
+      setForm({ full_name: data.full_name ?? "", company: data.company ?? "", phone: data.phone ?? "", bio: (data as any).bio ?? "" });
+      setAvatarPath((data as any).avatar_url ?? null);
+    }
   }, [data]);
 
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
   const save = async () => {
     if (!user) return;
     setSaving(true);
-    const { error } = await supabase.from("profiles").upsert({ id: user.id, email: user.email!, ...form, updated_at: new Date().toISOString() });
+    const { error } = await supabase.from("profiles").upsert({
+      id: user.id, email: user.email!,
+      full_name: form.full_name, company: form.company, phone: form.phone,
+      avatar_url: avatarPath,
+      updated_at: new Date().toISOString(),
+    });
     setSaving(false);
     if (error) return toast.error(error.message);
     toast.success("Profile updated");
     qc.invalidateQueries({ queryKey: ["profile"] });
-    await supabase.from("activity_logs").insert({ user_id: user.id, action: "profile.updated", entity: "profile" });
+    qc.invalidateQueries({ queryKey: ["profile-lite"] });
+    logAction(user.id, "profile.updated", "profile");
   };
 
-  if (isLoading) return <Loader2 className="h-5 w-5 animate-spin" />;
+  const onAvatarPick = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+    if (file.size > 5 * 1024 * 1024) return toast.error("Image too large (max 5 MB)");
+    setUploading(true);
+    try {
+      const path = await uploadAvatar(user.id, file);
+      setAvatarPath(path);
+      await supabase.from("profiles").upsert({ id: user.id, email: user.email!, avatar_url: path, updated_at: new Date().toISOString() });
+      qc.invalidateQueries({ queryKey: ["profile-lite"] });
+      qc.invalidateQueries({ queryKey: ["profile"] });
+      toast.success("Photo updated");
+      logAction(user.id, "profile.avatar_uploaded", "profile");
+    } catch (err: any) {
+      toast.error(err.message ?? "Upload failed");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  if (isLoading) return <div className="flex justify-center p-12"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>;
+
+  const initials = (form.full_name || user?.email || "?").slice(0, 2).toUpperCase();
+  const created = (data as any)?.created_at ? format(new Date((data as any).created_at), "MMM d, yyyy") : "—";
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6">
+    <div className="mx-auto max-w-5xl space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">Profile</h1>
-        <p className="text-sm text-muted-foreground">Manage your personal account details.</p>
+        <h1 className="text-3xl font-bold tracking-tight">Profile</h1>
+        <p className="text-sm text-muted-foreground">Personalize how you appear across Digistream.</p>
       </div>
-      <Card className="rounded-2xl p-6 shadow-[var(--shadow-card)]">
-        <div className="flex items-center gap-4">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-xl font-bold text-primary-foreground">
-            {(form.full_name || user?.email || "?").slice(0,2).toUpperCase()}
-          </div>
-          <div className="min-w-0">
-            <div className="font-semibold">{form.full_name || "Unnamed user"}</div>
-            <div className="truncate text-sm text-muted-foreground">{user?.email}</div>
+
+      {/* Hero card */}
+      <Card className="relative overflow-hidden rounded-3xl p-0 shadow-[var(--shadow-elevated)]">
+        <div className="h-32 bg-gradient-to-r from-primary via-primary-glow to-primary" />
+        <div className="px-8 pb-8">
+          <div className="-mt-14 flex flex-col items-start gap-4 md:flex-row md:items-end md:justify-between">
+            <div className="flex items-end gap-5">
+              <div className="relative">
+                {avatarDisplay ? (
+                  <img src={avatarDisplay} alt="" className="h-28 w-28 rounded-2xl object-cover ring-4 ring-card shadow-xl" />
+                ) : (
+                  <div className="flex h-28 w-28 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary-glow text-3xl font-bold text-primary-foreground ring-4 ring-card shadow-xl">
+                    {initials}
+                  </div>
+                )}
+                <button
+                  type="button"
+                  onClick={() => fileInput.current?.click()}
+                  className="absolute -bottom-2 -right-2 flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition hover:scale-105"
+                  title="Change photo"
+                >
+                  {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
+                </button>
+                <input ref={fileInput} type="file" accept="image/*" className="hidden" onChange={onAvatarPick} />
+              </div>
+              <div className="pb-1">
+                <div className="flex items-center gap-2">
+                  <h2 className="text-2xl font-bold">{form.full_name || "Unnamed user"}</h2>
+                  <Badge variant="secondary" className="capitalize"><CheckCircle2 className="mr-1 h-3 w-3 text-success" />{role}</Badge>
+                </div>
+                <div className="mt-1 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+                  <span className="inline-flex items-center gap-1"><Mail className="h-3.5 w-3.5" /> {user?.email}</span>
+                  {form.phone && <span className="inline-flex items-center gap-1"><Phone className="h-3.5 w-3.5" /> {form.phone}</span>}
+                  {form.company && <span className="inline-flex items-center gap-1"><Building2 className="h-3.5 w-3.5" /> {form.company}</span>}
+                </div>
+                <div className="mt-1 text-xs text-muted-foreground">Member since {created}</div>
+              </div>
+            </div>
+            <Button onClick={save} disabled={saving} size="lg" className="rounded-xl">
+              {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Save changes
+            </Button>
           </div>
         </div>
-        <div className="mt-6 grid gap-4 md:grid-cols-2">
+      </Card>
+
+      <Card className="rounded-2xl p-6 shadow-[var(--shadow-card)]">
+        <h3 className="font-semibold">Personal details</h3>
+        <div className="mt-4 grid gap-4 md:grid-cols-2">
           <div><Label>Full name</Label><Input className="mt-1.5" value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} /></div>
           <div><Label>Company</Label><Input className="mt-1.5" value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} /></div>
-          <div><Label>Phone</Label><Input className="mt-1.5" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} /></div>
-          <div><Label>Avatar URL</Label><Input className="mt-1.5" value={form.avatar_url} onChange={(e) => setForm({ ...form, avatar_url: e.target.value })} /></div>
-        </div>
-        <div className="mt-6 flex justify-end">
-          <Button onClick={save} disabled={saving}>{saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Save changes</Button>
+          <div><Label>Phone</Label><Input className="mt-1.5" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="+254 700 000 000" /></div>
+          <div><Label>Email</Label><Input className="mt-1.5" value={user?.email ?? ""} disabled /></div>
+          <div className="md:col-span-2"><Label>Bio</Label><Textarea className="mt-1.5" value={form.bio} onChange={(e) => setForm({ ...form, bio: e.target.value })} rows={3} placeholder="Tell us about yourself" /></div>
         </div>
       </Card>
     </div>

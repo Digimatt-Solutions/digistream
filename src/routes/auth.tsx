@@ -32,7 +32,6 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    // Fire-and-forget: ensure admin exists.
     fetch("/api/public/seed-admin").catch(() => {});
   }, []);
 
@@ -52,8 +51,7 @@ function AuthPage() {
     e.preventDefault();
     setBusy(true);
     const { error } = await supabase.auth.signUp({
-      email,
-      password,
+      email, password,
       options: { emailRedirectTo: `${window.location.origin}/app`, data: { full_name: name } },
     });
     setBusy(false);
@@ -65,17 +63,16 @@ function AuthPage() {
 
   return (
     <div className="grid min-h-screen grid-cols-1 lg:grid-cols-2">
-      {/* Left visual */}
+      {/* Left visual — no orange overlay, subtle bottom darkening */}
       <div className="relative hidden overflow-hidden lg:block">
         <img src={authBg.url} alt="" className="absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/70 via-primary/30 to-background/10" />
-        <div className="relative flex h-full flex-col justify-between p-12 text-white">
-          <Brand />
+        <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/55 via-black/25 to-transparent" />
+        <div className="relative flex h-full flex-col justify-end p-12 text-white">
           <div className="max-w-md">
-            <h2 className="text-4xl font-bold leading-tight drop-shadow">
+            <h2 className="text-4xl font-bold leading-tight drop-shadow-lg">
               Stream what matters, to whoever needs it.
             </h2>
-            <p className="mt-4 text-white/90 drop-shadow">
+            <p className="mt-4 text-white/95 drop-shadow">
               Digistream powers licensed content distribution — packaged, priced and delivered to the screens your customers subscribe to.
             </p>
           </div>
@@ -90,7 +87,7 @@ function AuthPage() {
           </div>
           <div className="rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-elevated)]">
             <div className="mb-6 flex flex-col items-center">
-              <div className="hidden lg:block"><Brand size="lg" /></div>
+              <Brand size="lg" />
               <h1 className="mt-3 text-2xl font-semibold">Digistream</h1>
               <p className="text-sm text-muted-foreground">Streaming content platform</p>
             </div>
@@ -142,8 +139,8 @@ function Field({ icon, label, type, value, onChange, placeholder }: { icon: Reac
     <div>
       <Label>{label}</Label>
       <div className="relative mt-1.5">
-        <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">{icon}</span>
-        <Input className="pl-9" type={type} value={value} onChange={(e) => onChange(e.target.value)} required placeholder={placeholder} />
+        <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-muted-foreground">{icon}</span>
+        <Input type={type} value={value} onChange={(e) => onChange(e.target.value)} required placeholder={placeholder} className="pl-9" />
       </div>
     </div>
   );
@@ -154,9 +151,9 @@ function PasswordField({ label, value, onChange, show, setShow }: { label: strin
     <div>
       <Label>{label}</Label>
       <div className="relative mt-1.5">
-        <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input className="px-9" type={show ? "text" : "password"} value={value} onChange={(e) => onChange(e.target.value)} required placeholder="••••••••" />
-        <button type="button" onClick={() => setShow(!show)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+        <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-muted-foreground"><Lock className="h-4 w-4" /></span>
+        <Input type={show ? "text" : "password"} value={value} onChange={(e) => onChange(e.target.value)} required placeholder="••••••••" className="pl-9 pr-10" />
+        <button type="button" onClick={() => setShow(!show)} className="absolute inset-y-0 right-3 flex items-center text-muted-foreground hover:text-foreground">
           {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
         </button>
       </div>
