@@ -97,14 +97,15 @@ function AdminDashboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 xl:grid-cols-6">
         <KpiCard label="Total Users" value={data?.userCount ?? "-"} icon={Users} />
         <KpiCard label="Content" value={data?.contentCount ?? "-"} icon={Film} tint="info" />
         <KpiCard label="Packages" value={data?.packageCount ?? "-"} icon={Package} tint="success" />
         <KpiCard label="Active Subs" value={data?.activeSubs ?? "-"} icon={Sparkles} tint="warning" />
         <KpiCard label="MRR" value={ksh(data?.mrr ?? 0)} icon={CreditCard} sub="Monthly recurring" />
-        <KpiCard label="Activity (200)" value={data?.recentActivity ?? 0} icon={Activity} tint="info" sub="Last events" />
+        <KpiCard label="Activity" value={data?.recentActivity ?? 0} icon={Activity} tint="info" sub="Recent events" />
       </div>
+
 
       <div className="grid gap-4 lg:grid-cols-3">
         <Card className="rounded-2xl p-6 shadow-[var(--shadow-card)] lg:col-span-2">
@@ -262,12 +263,13 @@ function ClientDashboard() {
         </div>
       </Card>
 
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
         <KpiCard label="Content Available" value={data?.totalContent ?? 0} icon={Film} />
         <KpiCard label="Videos" value={data?.typeCounts?.find(t => t.name === "video")?.value ?? 0} icon={Video} tint="info" />
         <KpiCard label="Songs" value={data?.typeCounts?.find(t => t.name === "song")?.value ?? 0} icon={Music2} tint="success" />
         <KpiCard label="Mixes" value={data?.typeCounts?.find(t => t.name === "mix")?.value ?? 0} icon={Radio} tint="warning" />
       </div>
+
 
       <div className="grid gap-4 lg:grid-cols-3">
         <Card className="rounded-2xl p-6 shadow-[var(--shadow-card)] lg:col-span-2">
