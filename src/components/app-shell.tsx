@@ -78,23 +78,41 @@ export function AppShell({ children }: { children: ReactNode }) {
         {nav.map((item) => {
           const active = pathname === item.to || (item.to !== "/app/dashboard" && pathname.startsWith(item.to));
           const Icon = item.icon;
-          return (
+          const cls = cn(
+            "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition",
+            compact && "justify-center px-2",
+            active
+              ? "bg-primary/10 text-primary shadow-sm"
+              : "text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+          );
+          const inner = (
+            <>
+              <Icon className={cn("h-4 w-4 shrink-0", active && "text-primary")} />
+              {!compact && <span className="truncate">{item.label}</span>}
+            </>
+          );
+          return item.external ? (
+            <a
+              key={item.to}
+              href={item.to}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setMobileOpen(false)}
+              className={cls}
+            >
+              {inner}
+            </a>
+          ) : (
             <Link
               key={item.to}
               to={item.to}
               onClick={() => setMobileOpen(false)}
-              className={cn(
-                "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition",
-                compact && "justify-center px-2",
-                active
-                  ? "bg-primary/10 text-primary shadow-sm"
-                  : "text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-              )}
+              className={cls}
             >
-              <Icon className={cn("h-4 w-4 shrink-0", active && "text-primary")} />
-              {!compact && <span className="truncate">{item.label}</span>}
+              {inner}
             </Link>
           );
+
         })}
       </nav>
       <button
