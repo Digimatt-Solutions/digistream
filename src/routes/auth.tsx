@@ -74,18 +74,16 @@ function AuthPage() {
         />
 
         {/* Subtle Bottom Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/10 to-transparent" />
-
+<div className="absolute inset-0 bg-[radial-gradient(ellipse_65%_50%_at_-5%_105%,rgba(0,0,0,0.58)_0%,rgba(0,0,0,0.35)_50%,rgba(0,0,0,0.15)_65%,transparent_95%)]" />
         {/* Text */}
         <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 md:p-10 lg:p-12">
-          <div className="max-w-lg">
+          <div className="max-w-sm">
             <h2 className="text-2xl font-bold leading-tight text-white sm:text-3xl md:text-4xl">
               Stream what matters, to whoever needs it.
             </h2>
 
-            <p className="mt-3 text-sm leading-relaxed text-white/90 sm:text-base">
-              Digistream powers licensed content distribution - packaged, priced, and delivered to
-              the screens your customers subscribe to.
+            <p className="mt-3 max-w-sm text-sm leading-relaxed text-white/90 sm:text-base">
+              Digistream powers licensed content delivered to your subscribers.
             </p>
           </div>
         </div>
