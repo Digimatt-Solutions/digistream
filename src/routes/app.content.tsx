@@ -109,24 +109,39 @@ function ContentPage() {
     return c;
   }, [data]);
 
-  const create = async () => {
+  const openCreate = () => {
+    setEditingId(null);
+    setForm(emptyForm);
+    setOpen(true);
+  };
+
+  const openEdit = (c: any) => {
+    setEditingId(c.id);
+    setForm({
+      title: c.title ?? "",
+      description: c.description ?? "",
+      category: c.category ?? "",
+      content_type: c.content_type ?? "video",
+      artist: c.artist ?? "",
+      release_year: c.release_year ?? new Date().getFullYear(),
+      thumbnail_url: c.thumbnail_url ?? "",
+      stream_url: c.stream_url ?? "",
+      duration_seconds: c.duration_seconds ?? 0,
+    });
+    setOpen(true);
+  };
+
+  const save = async () => {
     setSaving(true);
-    const { error } = await supabase.from("content").insert(form);
+    const { error } = editingId
+      ? await supabase.from("content").update(form).eq("id", editingId)
+      : await supabase.from("content").insert(form);
     setSaving(false);
     if (error) return toast.error(error.message);
-    toast.success("Content added");
+    toast.success(editingId ? "Content updated" : "Content added");
     setOpen(false);
-    setForm({
-      title: "",
-      description: "",
-      category: "",
-      content_type: "video",
-      artist: "",
-      release_year: new Date().getFullYear(),
-      thumbnail_url: "",
-      stream_url: "",
-      duration_seconds: 0,
-    });
+    setEditingId(null);
+    setForm(emptyForm);
     qc.invalidateQueries({ queryKey: ["admin-content"] });
   };
 
