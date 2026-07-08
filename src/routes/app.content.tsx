@@ -338,12 +338,12 @@ function ContentPage() {
                 <h2 className="text-lg font-bold">{t.label}</h2>
                 <span className="text-xs text-muted-foreground">· {grouped[t.value].length}</span>
               </div>
-              <ContentGrid items={grouped[t.value]} onDelete={remove} />
+              <ContentGrid items={grouped[t.value]} onDelete={remove} onEdit={openEdit} />
             </section>
           ))}
         </div>
       ) : (
-        <ContentGrid items={filtered} onDelete={remove} />
+        <ContentGrid items={filtered} onDelete={remove} onEdit={openEdit} />
       )}
     </div>
   );
