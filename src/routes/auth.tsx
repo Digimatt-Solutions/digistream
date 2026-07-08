@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Brand } from "@/components/brand";
-const AUTH_BG_URL = "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=2000&q=80";
+const AUTH_BG_URL = "/auth-bg.png";
 
 export const Route = createFileRoute("/auth")({
   component: AuthPage,
