@@ -69,9 +69,10 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   const SidebarBody = ({ compact = false }: { compact?: boolean }) => (
     <div className="flex h-full flex-col bg-sidebar">
-      <div className={cn("flex h-16 items-center border-b border-sidebar-border", compact ? "justify-center" : "px-5")}>
-        {compact ? <Brand showText={false} size="sm" /> : <Brand />}
+      <div className={cn("flex h-16 items-center border-b border-sidebar-border", compact ? "justify-center" : "px-4")}>
+        {compact ? <Brand showText={false} size="sm" /> : <Brand variant="full" size="lg" />}
       </div>
+
       <nav className="flex-1 space-y-1 overflow-y-auto p-3">
         {nav.map((item) => {
           const active = pathname === item.to || (item.to !== "/app/dashboard" && pathname.startsWith(item.to));
@@ -111,7 +112,8 @@ export function AppShell({ children }: { children: ReactNode }) {
   const sidebarWidth = collapsed ? "4rem" : "16rem";
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-muted/50">
+
       <aside
         className="fixed inset-y-0 left-0 z-40 hidden border-r border-sidebar-border transition-all lg:block"
         style={{ width: sidebarWidth }}
