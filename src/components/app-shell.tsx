@@ -9,6 +9,7 @@ import {
 import { useSession } from "@/lib/session";
 import { supabase } from "@/integrations/supabase/client";
 import { Brand } from "@/components/brand";
+import { RefreshButton } from "@/components/refresh-button";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useAvatarUrl } from "@/lib/avatar";
