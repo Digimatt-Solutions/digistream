@@ -164,9 +164,11 @@ export function AppShell({ children }: { children: ReactNode }) {
               Welcome, <span className="font-semibold text-foreground">{displayName}</span>
             </p>
           </div>
+          <RefreshButton label="" />
           <Button variant="ghost" size="icon" className="rounded-lg">
             <Bell className="h-4 w-4" />
           </Button>
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="flex items-center gap-2.5 rounded-full border border-border bg-card p-1 pr-3 shadow-sm transition hover:border-primary/40 hover:shadow-md">
