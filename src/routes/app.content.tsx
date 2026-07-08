@@ -60,9 +60,10 @@ function ContentPage() {
   });
 
   const [open, setOpen] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [tab, setTab] = useState<string>("all");
   const [search, setSearch] = useState("");
-  const [form, setForm] = useState({
+  const emptyForm = {
     title: "",
     description: "",
     category: "",
@@ -72,7 +73,8 @@ function ContentPage() {
     thumbnail_url: "",
     stream_url: "",
     duration_seconds: 0,
-  });
+  };
+  const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
 
   const filtered = useMemo(() => {
