@@ -58,6 +58,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "theme-color", content: "#f97316" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-title", content: "Digistream" },
+
       { title: "Digistream - Streaming Content Platform" },
       { name: "description", content: "Digistream by Digimatt. Multi-tenant streaming distribution with packaged content, per-client branding and real-time playback." },
       { property: "og:title", content: "Digistream - Streaming Content Platform" },
