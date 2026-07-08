@@ -9,7 +9,10 @@ export const Route = createFileRoute("/api/public/seed-admin")({
       GET: async () => {
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
         // Check if the admin already exists by listing users (page 1 is fine for our fixed email)
-        const { data: existing } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 200 });
+        const { data: existing } = await supabaseAdmin.auth.admin.listUsers({
+          page: 1,
+          perPage: 200,
+        });
         const already = existing?.users?.find((u) => u.email === ADMIN_EMAIL);
         let userId = already?.id;
         if (!already) {
@@ -29,10 +32,9 @@ export const Route = createFileRoute("/api/public/seed-admin")({
         }
         // Ensure admin role (trigger sets it based on email, but enforce anyway)
         if (userId) {
-          await supabaseAdmin.from("user_roles").upsert(
-            { user_id: userId, role: "admin" },
-            { onConflict: "user_id,role" },
-          );
+          await supabaseAdmin
+            .from("user_roles")
+            .upsert({ user_id: userId, role: "admin" }, { onConflict: "user_id,role" });
         }
         return new Response(JSON.stringify({ ok: true, seeded: !already }), {
           headers: { "content-type": "application/json" },

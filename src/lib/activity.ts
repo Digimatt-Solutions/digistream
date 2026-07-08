@@ -26,18 +26,28 @@ export function parseUA(ua: string): { device: string; browser: string; os: stri
   const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(ua);
   const isTablet = /Tablet|iPad/i.test(ua);
   const device = isTablet ? "Tablet" : isMobile ? "Mobile" : "Desktop";
-  const browser = /Edg\//.test(ua) ? "Edge"
-    : /OPR\//.test(ua) ? "Opera"
-    : /Chrome\//.test(ua) ? "Chrome"
-    : /Firefox\//.test(ua) ? "Firefox"
-    : /Safari\//.test(ua) ? "Safari"
-    : "Other";
-  const os = /Windows/.test(ua) ? "Windows"
-    : /Mac OS X/.test(ua) ? "macOS"
-    : /Android/.test(ua) ? "Android"
-    : /iPhone|iPad|iPod/.test(ua) ? "iOS"
-    : /Linux/.test(ua) ? "Linux"
-    : "Other";
+  const browser = /Edg\//.test(ua)
+    ? "Edge"
+    : /OPR\//.test(ua)
+      ? "Opera"
+      : /Chrome\//.test(ua)
+        ? "Chrome"
+        : /Firefox\//.test(ua)
+          ? "Firefox"
+          : /Safari\//.test(ua)
+            ? "Safari"
+            : "Other";
+  const os = /Windows/.test(ua)
+    ? "Windows"
+    : /Mac OS X/.test(ua)
+      ? "macOS"
+      : /Android/.test(ua)
+        ? "Android"
+        : /iPhone|iPad|iPod/.test(ua)
+          ? "iOS"
+          : /Linux/.test(ua)
+            ? "Linux"
+            : "Other";
   return { device, browser, os };
 }
 
@@ -74,13 +84,18 @@ function trafficContext() {
   return { user_agent: ua, ...parseUA(ua), country: guessCountry() };
 }
 
-export function logAction(userId: string | undefined, action: string, entity?: string, details?: Record<string, unknown>) {
+export function logAction(
+  userId: string | undefined,
+  action: string,
+  entity?: string,
+  details?: Record<string, unknown>,
+) {
   if (!userId) return;
   void supabase.from("activity_logs").insert({
     user_id: userId,
     action,
     entity: entity ?? null,
-    page: (typeof window !== "undefined" ? window.location.pathname : null),
+    page: typeof window !== "undefined" ? window.location.pathname : null,
     details: (details ?? null) as never,
     ...trafficContext(),
   } as never);

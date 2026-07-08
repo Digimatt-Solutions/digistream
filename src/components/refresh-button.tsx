@@ -27,7 +27,7 @@ export function RefreshButton({ label = "Refresh" }: { label?: string }) {
   };
   return (
     <Button variant="outline" size="sm" onClick={handle} disabled={busy} className="rounded-full">
-      <RefreshCw className={`mr-2 h-4 w-4 ${busy ? "animate-spin" : ""}`} />
+      <RefreshCw className={` h-2 w-2 ${busy ? "animate-spin" : ""}`} />
       {label}
     </Button>
   );

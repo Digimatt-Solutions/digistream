@@ -3,8 +3,21 @@ import { useState, type ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
 import type { LucideIcon } from "lucide-react";
 import {
-  LayoutDashboard, Users, Activity, CreditCard, Film, Package, User, Settings,
-  Menu, Bell, LogOut, ChevronDown, PlayCircle, Palette, Sparkles,
+  LayoutDashboard,
+  Users,
+  Activity,
+  CreditCard,
+  Film,
+  Package,
+  User,
+  Settings,
+  Menu,
+  Bell,
+  LogOut,
+  ChevronDown,
+  PlayCircle,
+  Palette,
+  Sparkles,
 } from "lucide-react";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/integrations/supabase/client";
@@ -15,13 +28,22 @@ import { cn } from "@/lib/utils";
 import { useAvatarUrl } from "@/lib/avatar";
 import { usePageTracking } from "@/lib/activity";
 import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem,
-  DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { toast } from "sonner";
 
-interface NavItem { label: string; to: string; icon: LucideIcon; external?: boolean }
+interface NavItem {
+  label: string;
+  to: string;
+  icon: LucideIcon;
+  external?: boolean;
+}
 
 const ADMIN_NAV: NavItem[] = [
   { label: "Dashboard", to: "/app/dashboard", icon: LayoutDashboard },
@@ -43,7 +65,6 @@ const CLIENT_NAV: NavItem[] = [
   { label: "Settings", to: "/app/settings", icon: Settings },
 ];
 
-
 export function AppShell({ children }: { children: ReactNode }) {
   const { user, role, signOut } = useSession();
   const navigate = useNavigate();
@@ -54,14 +75,27 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   const { data: profile } = useQuery({
     queryKey: ["profile-lite", user?.id],
-    queryFn: async () => (await supabase.from("profiles").select("full_name, avatar_url").eq("id", user!.id).maybeSingle()).data,
+    queryFn: async () =>
+      (
+        await supabase
+          .from("profiles")
+          .select("full_name, avatar_url")
+          .eq("id", user!.id)
+          .maybeSingle()
+      ).data,
     enabled: !!user,
   });
   const avatarUrl = useAvatarUrl(profile?.avatar_url);
 
   const nav = role === "admin" ? ADMIN_NAV : CLIENT_NAV;
-  const displayName = profile?.full_name || user?.user_metadata?.full_name || user?.email?.split("@")[0] || "Account";
-  const initials = displayName.split(" ").map((s: string) => s[0]).slice(0, 2).join("").toUpperCase();
+  const displayName =
+    profile?.full_name || user?.user_metadata?.full_name || user?.email?.split("@")[0] || "Account";
+  const initials = displayName
+    .split(" ")
+    .map((s: string) => s[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
 
   const handleSignOut = async () => {
     await signOut();
@@ -71,13 +105,19 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   const SidebarBody = ({ compact = false }: { compact?: boolean }) => (
     <div className="flex h-full flex-col bg-sidebar">
-      <div className={cn("flex h-16 items-center border-b border-sidebar-border", compact ? "justify-center" : "px-4")}>
+      <div
+        className={cn(
+          "flex h-16 items-center border-b border-sidebar-border",
+          compact ? "justify-center" : "px-4",
+        )}
+      >
         {compact ? <Brand showText={false} size="sm" /> : <Brand variant="full" size="lg" />}
       </div>
 
       <nav className="flex-1 space-y-1 overflow-y-auto p-3">
         {nav.map((item) => {
-          const active = pathname === item.to || (item.to !== "/app/dashboard" && pathname.startsWith(item.to));
+          const active =
+            pathname === item.to || (item.to !== "/app/dashboard" && pathname.startsWith(item.to));
           const Icon = item.icon;
           const cls = cn(
             "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition",
@@ -104,16 +144,10 @@ export function AppShell({ children }: { children: ReactNode }) {
               {inner}
             </a>
           ) : (
-            <Link
-              key={item.to}
-              to={item.to}
-              onClick={() => setMobileOpen(false)}
-              className={cls}
-            >
+            <Link key={item.to} to={item.to} onClick={() => setMobileOpen(false)} className={cls}>
               {inner}
             </Link>
           );
-
         })}
       </nav>
       <button
@@ -133,7 +167,6 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen bg-muted/50">
-
       <aside
         className="fixed inset-y-0 left-0 z-40 hidden border-r border-sidebar-border transition-all lg:block"
         style={{ width: sidebarWidth }}
@@ -143,7 +176,9 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
         <SheetContent side="left" className="w-64 p-0">
-          <SheetHeader className="sr-only"><SheetTitle>Navigation</SheetTitle></SheetHeader>
+          <SheetHeader className="sr-only">
+            <SheetTitle>Navigation</SheetTitle>
+          </SheetHeader>
           <SidebarBody />
         </SheetContent>
       </Sheet>
@@ -154,10 +189,20 @@ export function AppShell({ children }: { children: ReactNode }) {
       >
         <style>{`@media (min-width: 1024px) { :root { --dg-sb: ${sidebarWidth}; } }`}</style>
         <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-border bg-card/90 px-4 backdrop-blur lg:px-6">
-          <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setMobileOpen(true)}>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="lg:hidden"
+            onClick={() => setMobileOpen(true)}
+          >
             <Menu className="h-5 w-5" />
           </Button>
-          <Button variant="ghost" size="icon" className="hidden lg:inline-flex" onClick={() => setCollapsed(!collapsed)}>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="hidden border lg:inline-flex"
+            onClick={() => setCollapsed(!collapsed)}
+          >
             <Menu className="h-5 w-5" />
           </Button>
           <div className="min-w-0 flex-1">
@@ -174,7 +219,11 @@ export function AppShell({ children }: { children: ReactNode }) {
             <DropdownMenuTrigger asChild>
               <button className="flex items-center gap-2.5 rounded-full border border-border bg-card p-1 pr-3 shadow-sm transition hover:border-primary/40 hover:shadow-md">
                 {avatarUrl ? (
-                  <img src={avatarUrl} alt="" className="h-9 w-9 rounded-full object-cover ring-2 ring-primary/20" />
+                  <img
+                    src={avatarUrl}
+                    alt=""
+                    className="h-9 w-9 rounded-full object-cover ring-2 ring-primary/20"
+                  />
                 ) : (
                   <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-glow text-sm font-bold text-primary-foreground ring-2 ring-primary/20">
                     {initials}
@@ -182,7 +231,9 @@ export function AppShell({ children }: { children: ReactNode }) {
                 )}
                 <div className="hidden text-left sm:block">
                   <div className="text-sm font-semibold leading-tight">{displayName}</div>
-                  <div className="text-[11px] capitalize text-muted-foreground">{role ?? "..."}</div>
+                  <div className="text-[11px] capitalize text-muted-foreground">
+                    {role ?? "..."}
+                  </div>
                 </div>
                 <ChevronDown className="h-4 w-4 text-muted-foreground" />
               </button>

@@ -51,7 +51,8 @@ function AuthPage() {
     e.preventDefault();
     setBusy(true);
     const { error } = await supabase.auth.signUp({
-      email, password,
+      email,
+      password,
       options: { emailRedirectTo: `${window.location.origin}/app`, data: { full_name: name } },
     });
     setBusy(false);
@@ -64,25 +65,35 @@ function AuthPage() {
   return (
     <div className="grid min-h-screen grid-cols-1 lg:grid-cols-2">
       {/* Left visual */}
-      <div className="relative hidden overflow-hidden bg-gradient-to-br from-orange-50 via-white to-orange-100 lg:block">
-        <img src={AUTH_BG_URL} alt="" className="absolute inset-0 h-full w-full object-contain object-center" />
-        <div className="absolute inset-x-0 bottom-0 p-12">
-          <div className="max-w-md rounded-2xl bg-white/70 p-6 backdrop-blur">
-            <h2 className="text-3xl font-bold leading-tight text-foreground">
+      <div className="relative hidden overflow-hidden lg:block">
+        {/* Background Image */}
+        <img
+          src={AUTH_BG_URL}
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover object-center"
+        />
+
+        {/* Subtle Bottom Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/10 to-transparent" />
+
+        {/* Text */}
+        <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 md:p-10 lg:p-12">
+          <div className="max-w-lg">
+            <h2 className="text-2xl font-bold leading-tight text-white sm:text-3xl md:text-4xl">
               Stream what matters, to whoever needs it.
             </h2>
-            <p className="mt-3 text-sm text-muted-foreground">
-              Digistream powers licensed content distribution - packaged, priced and delivered to the screens your customers subscribe to.
+
+            <p className="mt-3 text-sm leading-relaxed text-white/90 sm:text-base">
+              Digistream powers licensed content distribution - packaged, priced, and delivered to
+              the screens your customers subscribe to.
             </p>
           </div>
         </div>
       </div>
 
-
       {/* Right form */}
       <div className="flex items-center justify-center bg-background px-6 py-12">
         <div className="w-full max-w-md">
-
           <div className="rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-elevated)]">
             <div className="mb-6 flex flex-col items-center">
               <Brand size="lg" />
@@ -98,9 +109,27 @@ function AuthPage() {
 
               <TabsContent value="signin">
                 <form onSubmit={signIn} className="mt-6 space-y-4">
-                  <Field icon={<Mail className="h-4 w-4" />} label="Email" type="email" value={email} onChange={setEmail} placeholder="you@example.com" />
-                  <PasswordField label="Password" value={password} onChange={setPassword} show={show} setShow={setShow} />
-                  <Button type="submit" disabled={busy} className="w-full rounded-lg text-base font-semibold shadow-[var(--shadow-glow)]" size="lg">
+                  <Field
+                    icon={<Mail className="h-4 w-4" />}
+                    label="Email"
+                    type="email"
+                    value={email}
+                    onChange={setEmail}
+                    placeholder="you@example.com"
+                  />
+                  <PasswordField
+                    label="Password"
+                    value={password}
+                    onChange={setPassword}
+                    show={show}
+                    setShow={setShow}
+                  />
+                  <Button
+                    type="submit"
+                    disabled={busy}
+                    className="w-full rounded-lg text-base font-semibold shadow-[var(--shadow-glow)]"
+                    size="lg"
+                  >
                     {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Sign In
                   </Button>
                 </form>
@@ -110,21 +139,56 @@ function AuthPage() {
                 <form onSubmit={signUp} className="mt-6 space-y-4">
                   <div>
                     <Label>Full name</Label>
-                    <Input className="mt-1.5" value={name} onChange={(e) => setName(e.target.value)} required placeholder="Jane Doe" />
+                    <Input
+                      className="mt-1.5"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
+                      placeholder="Your Name"
+                    />
                   </div>
-                  <Field icon={<Mail className="h-4 w-4" />} label="Email" type="email" value={email} onChange={setEmail} placeholder="you@example.com" />
-                  <PasswordField label="Password" value={password} onChange={setPassword} show={show} setShow={setShow} />
-                  <Button type="submit" disabled={busy} className="w-full rounded-lg text-base font-semibold" size="lg">
+                  <Field
+                    icon={<Mail className="h-4 w-4" />}
+                    label="Email"
+                    type="email"
+                    value={email}
+                    onChange={setEmail}
+                    placeholder="you@example.com"
+                  />
+                  <PasswordField
+                    label="Password"
+                    value={password}
+                    onChange={setPassword}
+                    show={show}
+                    setShow={setShow}
+                  />
+                  <Button
+                    type="submit"
+                    disabled={busy}
+                    className="w-full rounded-lg text-base font-semibold"
+                    size="lg"
+                  >
                     {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Create Account
                   </Button>
                   <p className="text-center text-xs text-muted-foreground">
-                    New accounts start as <strong>Client</strong>. Admin credentials are provisioned separately.
+                    By creating an account, you acknowledge that you have read and agree to our{" "}
+                    <strong>Policies</strong> and <strong>Terms of Service</strong>.
                   </p>
                 </form>
               </TabsContent>
             </Tabs>
 
-            <p className="mt-6 text-center text-xs text-muted-foreground">© Powered by <a href="https://digimatt.co.ke/" target="_blank" rel="noopener noreferrer" className="font-semibold text-primary hover:underline">Digimatt Solutions</a></p>
+            <p className="mt-6 text-center text-xs text-muted-foreground">
+              © Powered by{" "}
+              <a
+                href="https://digimatt.co.ke/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-primary hover:underline"
+              >
+                Digimatt Solutions
+              </a>
+            </p>
           </div>
         </div>
       </div>
@@ -132,26 +196,74 @@ function AuthPage() {
   );
 }
 
-function Field({ icon, label, type, value, onChange, placeholder }: { icon: React.ReactNode; label: string; type: string; value: string; onChange: (v: string) => void; placeholder?: string }) {
+function Field({
+  icon,
+  label,
+  type,
+  value,
+  onChange,
+  placeholder,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  type: string;
+  value: string;
+  onChange: (v: string) => void;
+  placeholder?: string;
+}) {
   return (
     <div>
       <Label>{label}</Label>
       <div className="relative mt-1.5">
-        <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-muted-foreground">{icon}</span>
-        <Input type={type} value={value} onChange={(e) => onChange(e.target.value)} required placeholder={placeholder} className="pl-9" />
+        <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-muted-foreground">
+          {icon}
+        </span>
+        <Input
+          type={type}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          required
+          placeholder={placeholder}
+          className="pl-9"
+        />
       </div>
     </div>
   );
 }
 
-function PasswordField({ label, value, onChange, show, setShow }: { label: string; value: string; onChange: (v: string) => void; show: boolean; setShow: (v: boolean) => void }) {
+function PasswordField({
+  label,
+  value,
+  onChange,
+  show,
+  setShow,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  show: boolean;
+  setShow: (v: boolean) => void;
+}) {
   return (
     <div>
       <Label>{label}</Label>
       <div className="relative mt-1.5">
-        <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-muted-foreground"><Lock className="h-4 w-4" /></span>
-        <Input type={show ? "text" : "password"} value={value} onChange={(e) => onChange(e.target.value)} required placeholder="••••••••" className="pl-9 pr-10" />
-        <button type="button" onClick={() => setShow(!show)} className="absolute inset-y-0 right-3 flex items-center text-muted-foreground hover:text-foreground">
+        <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-muted-foreground">
+          <Lock className="h-4 w-4" />
+        </span>
+        <Input
+          type={show ? "text" : "password"}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          required
+          placeholder="••••••••"
+          className="pl-9 pr-10"
+        />
+        <button
+          type="button"
+          onClick={() => setShow(!show)}
+          className="absolute inset-y-0 right-3 flex items-center text-muted-foreground hover:text-foreground"
+        >
           {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
         </button>
       </div>

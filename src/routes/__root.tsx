@@ -22,7 +22,10 @@ function NotFoundComponent() {
         <p className="mt-2 text-sm text-muted-foreground">
           This page doesn't exist inside your Digistream workspace.
         </p>
-        <a href="/auth" className="mt-6 inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90">
+        <a
+          href="/auth"
+          className="mt-6 inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90"
+        >
           Back to sign in
         </a>
       </div>
@@ -42,7 +45,10 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
         <p className="mt-2 text-sm text-muted-foreground">Try again or head back home.</p>
         <div className="mt-6 flex justify-center gap-2">
           <button
-            onClick={() => { router.invalidate(); reset(); }}
+            onClick={() => {
+              router.invalidate();
+              reset();
+            }}
             className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
           >
             Try again
@@ -63,26 +69,48 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "apple-mobile-web-app-title", content: "Digistream" },
 
       { title: "Digistream - Streaming Content Platform" },
-      { name: "description", content: "Digistream by Digimatt. Multi-tenant streaming distribution with packaged content, per-client branding and real-time playback." },
+      {
+        name: "description",
+        content:
+          "Digistream by Digimatt. Multi-tenant streaming distribution with packaged content, per-client branding and real-time playback.",
+      },
       { property: "og:title", content: "Digistream - Streaming Content Platform" },
-      { property: "og:description", content: "Digistream by Digimatt. Multi-tenant streaming distribution with packaged content, per-client branding and real-time playback." },
+      {
+        property: "og:description",
+        content:
+          "Digistream by Digimatt. Multi-tenant streaming distribution with packaged content, per-client branding and real-time playback.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Digistream - Streaming Content Platform" },
-      { name: "twitter:description", content: "Digistream by Digimatt. Multi-tenant streaming distribution with packaged content, per-client branding and real-time playback." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/7a6c17e9-c235-46d2-8b87-dee1053d5fca/id-preview-fd5e1ccd--2eb9d749-f81f-4c42-b263-189255989c7f.lovable.app-1783507139474.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/7a6c17e9-c235-46d2-8b87-dee1053d5fca/id-preview-fd5e1ccd--2eb9d749-f81f-4c42-b263-189255989c7f.lovable.app-1783507139474.png" },
+      {
+        name: "twitter:description",
+        content:
+          "Digistream by Digimatt. Multi-tenant streaming distribution with packaged content, per-client branding and real-time playback.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/7a6c17e9-c235-46d2-8b87-dee1053d5fca/id-preview-fd5e1ccd--2eb9d749-f81f-4c42-b263-189255989c7f.lovable.app-1783507139474.png",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/7a6c17e9-c235-46d2-8b87-dee1053d5fca/id-preview-fd5e1ccd--2eb9d749-f81f-4c42-b263-189255989c7f.lovable.app-1783507139474.png",
+      },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap",
+      },
       { rel: "stylesheet", href: appCss },
       { rel: "icon", type: "image/png", href: "/favicon.png" },
       { rel: "apple-touch-icon", href: "/favicon.png" },
       { rel: "manifest", href: "/manifest.webmanifest" },
     ],
-
   }),
   shellComponent: RootShell,
   component: RootComponent,
@@ -93,8 +121,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <head><HeadContent /></head>
-      <body>{children}<Scripts /></body>
+      <head>
+        <HeadContent />
+      </head>
+      <body>
+        {children}
+        <Scripts />
+      </body>
     </html>
   );
 }

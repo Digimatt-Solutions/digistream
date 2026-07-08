@@ -21,7 +21,11 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   const fetchRole = async (userId: string) => {
-    const { data } = await supabase.from("user_roles").select("role").eq("user_id", userId).maybeSingle();
+    const { data } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userId)
+      .maybeSingle();
     setRole((data?.role as AppRole) ?? "client");
   };
 
@@ -52,7 +56,9 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <Ctx.Provider value={{ session, user: session?.user ?? null, role, loading, signOut, refreshRole }}>
+    <Ctx.Provider
+      value={{ session, user: session?.user ?? null, role, loading, signOut, refreshRole }}
+    >
       {children}
     </Ctx.Provider>
   );

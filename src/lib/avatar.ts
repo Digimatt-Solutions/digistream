@@ -8,13 +8,23 @@ export function useAvatarUrl(pathOrUrl?: string | null): string | undefined {
   useEffect(() => {
     let cancelled = false;
     async function resolve() {
-      if (!pathOrUrl) { setUrl(undefined); return; }
-      if (/^https?:\/\//i.test(pathOrUrl)) { setUrl(pathOrUrl); return; }
-      const { data } = await supabase.storage.from("avatars").createSignedUrl(pathOrUrl, 60 * 60 * 24 * 7);
+      if (!pathOrUrl) {
+        setUrl(undefined);
+        return;
+      }
+      if (/^https?:\/\//i.test(pathOrUrl)) {
+        setUrl(pathOrUrl);
+        return;
+      }
+      const { data } = await supabase.storage
+        .from("avatars")
+        .createSignedUrl(pathOrUrl, 60 * 60 * 24 * 7);
       if (!cancelled) setUrl(data?.signedUrl);
     }
     resolve();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [pathOrUrl]);
   return url;
 }
@@ -22,7 +32,9 @@ export function useAvatarUrl(pathOrUrl?: string | null): string | undefined {
 export async function uploadAvatar(userId: string, file: File): Promise<string> {
   const ext = file.name.split(".").pop() || "jpg";
   const path = `${userId}/avatar-${Date.now()}.${ext}`;
-  const { error } = await supabase.storage.from("avatars").upload(path, file, { upsert: true, contentType: file.type });
+  const { error } = await supabase.storage
+    .from("avatars")
+    .upload(path, file, { upsert: true, contentType: file.type });
   if (error) throw error;
   return path;
 }

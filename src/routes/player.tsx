@@ -31,7 +31,9 @@ function PlayerStandalone() {
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-border bg-card/90 px-4 backdrop-blur sm:h-16 sm:px-6">
         <Brand variant="full" size="md" />
-        <span className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">Standalone Player</span>
+        <span className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
+          Standalone Player
+        </span>
       </header>
       <main className="mx-auto w-full max-w-[1600px] px-3 py-4 sm:px-6 sm:py-6 lg:px-8">
         <PlayerView standalone />
