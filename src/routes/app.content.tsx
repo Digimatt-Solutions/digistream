@@ -28,6 +28,7 @@ import {
   Loader2,
   Film,
   Trash2,
+  Pencil,
   Music2,
   Video,
   Radio,
@@ -59,9 +60,10 @@ function ContentPage() {
   });
 
   const [open, setOpen] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [tab, setTab] = useState<string>("all");
   const [search, setSearch] = useState("");
-  const [form, setForm] = useState({
+  const emptyForm = {
     title: "",
     description: "",
     category: "",
@@ -71,7 +73,8 @@ function ContentPage() {
     thumbnail_url: "",
     stream_url: "",
     duration_seconds: 0,
-  });
+  };
+  const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
 
   const filtered = useMemo(() => {
@@ -106,24 +109,39 @@ function ContentPage() {
     return c;
   }, [data]);
 
-  const create = async () => {
+  const openCreate = () => {
+    setEditingId(null);
+    setForm(emptyForm);
+    setOpen(true);
+  };
+
+  const openEdit = (c: any) => {
+    setEditingId(c.id);
+    setForm({
+      title: c.title ?? "",
+      description: c.description ?? "",
+      category: c.category ?? "",
+      content_type: c.content_type ?? "video",
+      artist: c.artist ?? "",
+      release_year: c.release_year ?? new Date().getFullYear(),
+      thumbnail_url: c.thumbnail_url ?? "",
+      stream_url: c.stream_url ?? "",
+      duration_seconds: c.duration_seconds ?? 0,
+    });
+    setOpen(true);
+  };
+
+  const save = async () => {
     setSaving(true);
-    const { error } = await supabase.from("content").insert(form);
+    const { error } = editingId
+      ? await supabase.from("content").update(form).eq("id", editingId)
+      : await supabase.from("content").insert(form);
     setSaving(false);
     if (error) return toast.error(error.message);
-    toast.success("Content added");
+    toast.success(editingId ? "Content updated" : "Content added");
     setOpen(false);
-    setForm({
-      title: "",
-      description: "",
-      category: "",
-      content_type: "video",
-      artist: "",
-      release_year: new Date().getFullYear(),
-      thumbnail_url: "",
-      stream_url: "",
-      duration_seconds: 0,
-    });
+    setEditingId(null);
+    setForm(emptyForm);
     qc.invalidateQueries({ queryKey: ["admin-content"] });
   };
 
@@ -154,15 +172,24 @@ function ContentPage() {
               className="w-72 pl-9"
             />
           </div>
-          <Dialog open={open} onOpenChange={setOpen}>
+          <Dialog
+            open={open}
+            onOpenChange={(o) => {
+              setOpen(o);
+              if (!o) {
+                setEditingId(null);
+                setForm(emptyForm);
+              }
+            }}
+          >
             <DialogTrigger asChild>
-              <Button>
+              <Button onClick={openCreate}>
                 <Plus className="mr-2 h-4 w-4" /> Add Content
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-lg">
               <DialogHeader>
-                <DialogTitle>New content</DialogTitle>
+                <DialogTitle>{editingId ? "Edit content" : "New content"}</DialogTitle>
               </DialogHeader>
               <div className="space-y-3">
                 <div className="grid grid-cols-2 gap-3">
@@ -264,8 +291,9 @@ function ContentPage() {
                 <Button variant="ghost" onClick={() => setOpen(false)}>
                   Cancel
                 </Button>
-                <Button onClick={create} disabled={saving || !form.title}>
-                  {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Create
+                <Button onClick={save} disabled={saving || !form.title}>
+                  {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  {editingId ? "Save changes" : "Create"}
                 </Button>
               </DialogFooter>
             </DialogContent>
@@ -310,18 +338,26 @@ function ContentPage() {
                 <h2 className="text-lg font-bold">{t.label}</h2>
                 <span className="text-xs text-muted-foreground">· {grouped[t.value].length}</span>
               </div>
-              <ContentGrid items={grouped[t.value]} onDelete={remove} />
+              <ContentGrid items={grouped[t.value]} onDelete={remove} onEdit={openEdit} />
             </section>
           ))}
         </div>
       ) : (
-        <ContentGrid items={filtered} onDelete={remove} />
+        <ContentGrid items={filtered} onDelete={remove} onEdit={openEdit} />
       )}
     </div>
   );
 }
 
-function ContentGrid({ items, onDelete }: { items: any[]; onDelete: (id: string) => void }) {
+function ContentGrid({
+  items,
+  onDelete,
+  onEdit,
+}: {
+  items: any[];
+  onDelete: (id: string) => void;
+  onEdit: (c: any) => void;
+}) {
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {items.map((c) => (
@@ -350,18 +386,28 @@ function ContentGrid({ items, onDelete }: { items: any[]; onDelete: (id: string)
               <div className="min-w-0">
                 <div className="truncate font-semibold">{c.title}</div>
                 <div className="text-xs text-muted-foreground">
-                  {c.artist ? `${c.artist} · ` : ""}
+                  {c.artist ? `${c.artist} - ` : ""}
                   {c.category}
                 </div>
               </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-muted-foreground hover:text-destructive"
-                onClick={() => onDelete(c.id)}
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
+              <div className="flex shrink-0 items-center gap-1">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-muted-foreground hover:text-primary"
+                  onClick={() => onEdit(c)}
+                >
+                  <Pencil className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-muted-foreground hover:text-destructive"
+                  onClick={() => onDelete(c.id)}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
             <p className="mt-2 line-clamp-2 text-xs text-muted-foreground">{c.description}</p>
           </div>
