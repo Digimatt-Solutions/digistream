@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -116,8 +116,9 @@ function ActivityPage() {
 
             <div className="flex items-center justify-between border-t border-border bg-muted/20 px-4 py-3">
               <div className="text-xs text-muted-foreground">
-                Showing <b>{page * PAGE_SIZE + 1}</b>–<b>{Math.min((page + 1) * PAGE_SIZE, filtered.length)}</b> of <b>{filtered.length}</b> records
+                Showing <b>{page * PAGE_SIZE + 1}</b>-<b>{Math.min((page + 1) * PAGE_SIZE, total)}</b> of <b>{total}</b> records
               </div>
+
               <div className="flex items-center gap-2">
                 <Button variant="outline" size="sm" onClick={() => setPage(Math.max(0, page - 1))} disabled={page === 0}>
                   <ChevronLeft className="h-4 w-4" /> Prev
