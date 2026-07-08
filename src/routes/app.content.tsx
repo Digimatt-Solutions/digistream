@@ -349,7 +349,15 @@ function ContentPage() {
   );
 }
 
-function ContentGrid({ items, onDelete }: { items: any[]; onDelete: (id: string) => void }) {
+function ContentGrid({
+  items,
+  onDelete,
+  onEdit,
+}: {
+  items: any[];
+  onDelete: (id: string) => void;
+  onEdit: (c: any) => void;
+}) {
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {items.map((c) => (
@@ -378,18 +386,28 @@ function ContentGrid({ items, onDelete }: { items: any[]; onDelete: (id: string)
               <div className="min-w-0">
                 <div className="truncate font-semibold">{c.title}</div>
                 <div className="text-xs text-muted-foreground">
-                  {c.artist ? `${c.artist} · ` : ""}
+                  {c.artist ? `${c.artist} - ` : ""}
                   {c.category}
                 </div>
               </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-muted-foreground hover:text-destructive"
-                onClick={() => onDelete(c.id)}
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
+              <div className="flex shrink-0 items-center gap-1">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-muted-foreground hover:text-primary"
+                  onClick={() => onEdit(c)}
+                >
+                  <Pencil className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-muted-foreground hover:text-destructive"
+                  onClick={() => onDelete(c.id)}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
             <p className="mt-2 line-clamp-2 text-xs text-muted-foreground">{c.description}</p>
           </div>
