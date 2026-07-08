@@ -172,15 +172,24 @@ function ContentPage() {
               className="w-72 pl-9"
             />
           </div>
-          <Dialog open={open} onOpenChange={setOpen}>
+          <Dialog
+            open={open}
+            onOpenChange={(o) => {
+              setOpen(o);
+              if (!o) {
+                setEditingId(null);
+                setForm(emptyForm);
+              }
+            }}
+          >
             <DialogTrigger asChild>
-              <Button>
+              <Button onClick={openCreate}>
                 <Plus className="mr-2 h-4 w-4" /> Add Content
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-lg">
               <DialogHeader>
-                <DialogTitle>New content</DialogTitle>
+                <DialogTitle>{editingId ? "Edit content" : "New content"}</DialogTitle>
               </DialogHeader>
               <div className="space-y-3">
                 <div className="grid grid-cols-2 gap-3">
