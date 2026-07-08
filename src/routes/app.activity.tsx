@@ -28,24 +28,21 @@ function ActivityPage() {
   const [page, setPage] = useState(0);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["activity-logs"],
+    queryKey: ["activity-logs", page, search],
     queryFn: async () => {
-      const { data } = await supabase
+      let q = supabase
         .from("activity_logs")
-        .select("*, profiles(full_name, email, avatar_url)")
-        .order("created_at", { ascending: false })
-        .limit(1000);
-      return data ?? [];
+        .select("*, profiles(full_name, email, avatar_url)", { count: "exact" })
+        .order("created_at", { ascending: false });
+      if (search) q = q.or(`action.ilike.%${search}%,entity.ilike.%${search}%,page.ilike.%${search}%`);
+      const { data, count } = await q.range(page * PAGE_SIZE, (page + 1) * PAGE_SIZE - 1);
+      return { rows: data ?? [], total: count ?? 0 };
     },
   });
 
-  const filtered = useMemo(() => {
-    if (!search) return data ?? [];
-    const s = search.toLowerCase();
-    return (data ?? []).filter((l: any) =>
-      `${l.action} ${l.entity ?? ""} ${l.page ?? ""} ${l.profiles?.full_name ?? ""} ${l.profiles?.email ?? ""}`.toLowerCase().includes(s),
-    );
-  }, [data, search]);
+  const filtered = data?.rows ?? [];
+  const total = data?.total ?? 0;
+
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const pageItems = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
