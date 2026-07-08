@@ -291,8 +291,9 @@ function ContentPage() {
                 <Button variant="ghost" onClick={() => setOpen(false)}>
                   Cancel
                 </Button>
-                <Button onClick={create} disabled={saving || !form.title}>
-                  {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Create
+                <Button onClick={save} disabled={saving || !form.title}>
+                  {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  {editingId ? "Save changes" : "Create"}
                 </Button>
               </DialogFooter>
             </DialogContent>
