@@ -20,7 +20,7 @@ import {
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { toast } from "sonner";
 
-interface NavItem { label: string; to: string; icon: LucideIcon }
+interface NavItem { label: string; to: string; icon: LucideIcon; external?: boolean }
 
 const ADMIN_NAV: NavItem[] = [
   { label: "Dashboard", to: "/app/dashboard", icon: LayoutDashboard },
@@ -35,12 +35,13 @@ const ADMIN_NAV: NavItem[] = [
 
 const CLIENT_NAV: NavItem[] = [
   { label: "Dashboard", to: "/app/dashboard", icon: LayoutDashboard },
-  { label: "Player", to: "/app/watch", icon: PlayCircle },
+  { label: "Player", to: "/player", icon: PlayCircle, external: true },
   { label: "Subscription", to: "/app/subscription", icon: Sparkles },
   { label: "Branding", to: "/app/branding", icon: Palette },
   { label: "Profile", to: "/app/profile", icon: User },
   { label: "Settings", to: "/app/settings", icon: Settings },
 ];
+
 
 export function AppShell({ children }: { children: ReactNode }) {
   const { user, role, signOut } = useSession();
