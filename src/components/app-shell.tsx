@@ -9,6 +9,7 @@ import {
 import { useSession } from "@/lib/session";
 import { supabase } from "@/integrations/supabase/client";
 import { Brand } from "@/components/brand";
+import { RefreshButton } from "@/components/refresh-button";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useAvatarUrl } from "@/lib/avatar";
@@ -20,7 +21,7 @@ import {
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { toast } from "sonner";
 
-interface NavItem { label: string; to: string; icon: LucideIcon }
+interface NavItem { label: string; to: string; icon: LucideIcon; external?: boolean }
 
 const ADMIN_NAV: NavItem[] = [
   { label: "Dashboard", to: "/app/dashboard", icon: LayoutDashboard },
@@ -35,12 +36,13 @@ const ADMIN_NAV: NavItem[] = [
 
 const CLIENT_NAV: NavItem[] = [
   { label: "Dashboard", to: "/app/dashboard", icon: LayoutDashboard },
-  { label: "Player", to: "/app/watch", icon: PlayCircle },
+  { label: "Player", to: "/player", icon: PlayCircle, external: true },
   { label: "Subscription", to: "/app/subscription", icon: Sparkles },
   { label: "Branding", to: "/app/branding", icon: Palette },
   { label: "Profile", to: "/app/profile", icon: User },
   { label: "Settings", to: "/app/settings", icon: Settings },
 ];
+
 
 export function AppShell({ children }: { children: ReactNode }) {
   const { user, role, signOut } = useSession();
@@ -77,23 +79,41 @@ export function AppShell({ children }: { children: ReactNode }) {
         {nav.map((item) => {
           const active = pathname === item.to || (item.to !== "/app/dashboard" && pathname.startsWith(item.to));
           const Icon = item.icon;
-          return (
+          const cls = cn(
+            "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition",
+            compact && "justify-center px-2",
+            active
+              ? "bg-primary/10 text-primary shadow-sm"
+              : "text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+          );
+          const inner = (
+            <>
+              <Icon className={cn("h-4 w-4 shrink-0", active && "text-primary")} />
+              {!compact && <span className="truncate">{item.label}</span>}
+            </>
+          );
+          return item.external ? (
+            <a
+              key={item.to}
+              href={item.to}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setMobileOpen(false)}
+              className={cls}
+            >
+              {inner}
+            </a>
+          ) : (
             <Link
               key={item.to}
               to={item.to}
               onClick={() => setMobileOpen(false)}
-              className={cn(
-                "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition",
-                compact && "justify-center px-2",
-                active
-                  ? "bg-primary/10 text-primary shadow-sm"
-                  : "text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-              )}
+              className={cls}
             >
-              <Icon className={cn("h-4 w-4 shrink-0", active && "text-primary")} />
-              {!compact && <span className="truncate">{item.label}</span>}
+              {inner}
             </Link>
           );
+
         })}
       </nav>
       <button
@@ -145,9 +165,11 @@ export function AppShell({ children }: { children: ReactNode }) {
               Welcome, <span className="font-semibold text-foreground">{displayName}</span>
             </p>
           </div>
+          <RefreshButton label="" />
           <Button variant="ghost" size="icon" className="rounded-lg">
             <Bell className="h-4 w-4" />
           </Button>
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="flex items-center gap-2.5 rounded-full border border-border bg-card p-1 pr-3 shadow-sm transition hover:border-primary/40 hover:shadow-md">

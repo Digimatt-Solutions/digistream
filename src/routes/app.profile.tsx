@@ -96,15 +96,15 @@ function ProfilePage() {
 
       {/* Hero card */}
       <Card className="relative overflow-hidden rounded-3xl p-0 shadow-[var(--shadow-elevated)]">
-        <div className="h-32 bg-gradient-to-r from-primary via-primary-glow to-primary" />
-        <div className="px-8 pb-8">
-          <div className="-mt-14 flex flex-col items-start gap-4 md:flex-row md:items-end md:justify-between">
-            <div className="flex items-end gap-5">
+        <div className="h-24 bg-gradient-to-r from-primary via-primary-glow to-primary sm:h-32" />
+        <div className="px-5 pb-6 sm:px-8 sm:pb-8">
+          <div className="-mt-14 flex flex-col items-center gap-4 text-center md:flex-row md:items-end md:justify-between md:text-left">
+            <div className="flex flex-col items-center gap-4 md:flex-row md:items-end md:gap-5">
               <div className="relative">
                 {avatarDisplay ? (
-                  <img src={avatarDisplay} alt="" className="h-28 w-28 rounded-2xl object-cover ring-4 ring-card shadow-xl" />
+                  <img src={avatarDisplay} alt="" className="h-24 w-24 rounded-2xl object-cover ring-4 ring-card shadow-xl sm:h-28 sm:w-28" />
                 ) : (
-                  <div className="flex h-28 w-28 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary-glow text-3xl font-bold text-primary-foreground ring-4 ring-card shadow-xl">
+                  <div className="flex h-24 w-24 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary-glow text-2xl font-bold text-primary-foreground ring-4 ring-card shadow-xl sm:h-28 sm:w-28 sm:text-3xl">
                     {initials}
                   </div>
                 )}
@@ -119,11 +119,11 @@ function ProfilePage() {
                 <input ref={fileInput} type="file" accept="image/*" className="hidden" onChange={onAvatarPick} />
               </div>
               <div className="pb-1">
-                <div className="flex items-center gap-2">
-                  <h2 className="text-2xl font-bold">{form.full_name || "Unnamed user"}</h2>
+                <div className="flex flex-wrap items-center justify-center gap-2 md:justify-start">
+                  <h2 className="text-xl font-bold sm:text-2xl">{form.full_name || "Unnamed user"}</h2>
                   <Badge variant="secondary" className="capitalize"><CheckCircle2 className="mr-1 h-3 w-3 text-success" />{role}</Badge>
                 </div>
-                <div className="mt-1 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+                <div className="mt-1 flex flex-wrap items-center justify-center gap-3 text-sm text-muted-foreground md:justify-start">
                   <span className="inline-flex items-center gap-1"><Mail className="h-3.5 w-3.5" /> {user?.email}</span>
                   {form.phone && <span className="inline-flex items-center gap-1"><Phone className="h-3.5 w-3.5" /> {form.phone}</span>}
                   {form.company && <span className="inline-flex items-center gap-1"><Building2 className="h-3.5 w-3.5" /> {form.company}</span>}
@@ -131,12 +131,13 @@ function ProfilePage() {
                 <div className="mt-1 text-xs text-muted-foreground">Member since {created}</div>
               </div>
             </div>
-            <Button onClick={save} disabled={saving} size="lg" className="rounded-xl">
+            <Button onClick={save} disabled={saving} size="lg" className="w-full rounded-xl md:w-auto">
               {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Save changes
             </Button>
           </div>
         </div>
       </Card>
+
 
       <Card className="rounded-2xl p-6 shadow-[var(--shadow-card)]">
         <h3 className="font-semibold">Personal details</h3>
