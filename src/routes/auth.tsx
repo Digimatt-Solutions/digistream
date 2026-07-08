@@ -63,21 +63,21 @@ function AuthPage() {
 
   return (
     <div className="grid min-h-screen grid-cols-1 lg:grid-cols-2">
-      {/* Left visual - no orange overlay, subtle bottom darkening */}
-      <div className="relative hidden overflow-hidden lg:block">
-        <img src={AUTH_BG_URL} alt="" className="absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/55 via-black/25 to-transparent" />
-        <div className="relative flex h-full flex-col justify-end p-12 text-white">
-          <div className="max-w-md">
-            <h2 className="text-4xl font-bold leading-tight drop-shadow-lg">
+      {/* Left visual */}
+      <div className="relative hidden overflow-hidden bg-gradient-to-br from-orange-50 via-white to-orange-100 lg:block">
+        <img src={AUTH_BG_URL} alt="" className="absolute inset-0 h-full w-full object-contain object-center" />
+        <div className="absolute inset-x-0 bottom-0 p-12">
+          <div className="max-w-md rounded-2xl bg-white/70 p-6 backdrop-blur">
+            <h2 className="text-3xl font-bold leading-tight text-foreground">
               Stream what matters, to whoever needs it.
             </h2>
-            <p className="mt-4 text-white/95 drop-shadow">
+            <p className="mt-3 text-sm text-muted-foreground">
               Digistream powers licensed content distribution - packaged, priced and delivered to the screens your customers subscribe to.
             </p>
           </div>
         </div>
       </div>
+
 
       {/* Right form */}
       <div className="flex items-center justify-center bg-background px-6 py-12">
