@@ -126,7 +126,7 @@ function AuthPage() {
               </TabsContent>
             </Tabs>
 
-            <p className="mt-6 text-center text-xs text-muted-foreground">© Powered by Digimatt Solutions</p>
+            <p className="mt-6 text-center text-xs text-muted-foreground">© Powered by <a href="https://digimatt.co.ke/" target="_blank" rel="noopener noreferrer" className="font-semibold text-primary hover:underline">Digimatt Solutions</a></p>
           </div>
         </div>
       </div>
