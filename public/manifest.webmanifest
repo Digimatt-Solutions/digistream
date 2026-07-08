@@ -1,0 +1,16 @@
+{
+  "name": "Digistream",
+  "short_name": "Digistream",
+  "description": "Digistream streaming content platform by Digimatt Solutions.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#ffffff",
+  "theme_color": "#f97316",
+  "icons": [
+    { "src": "/logo.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/logo.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/favicon.png", "sizes": "180x180", "type": "image/png", "purpose": "any" }
+  ]
+}
