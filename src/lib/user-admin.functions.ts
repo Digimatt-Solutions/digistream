@@ -20,7 +20,7 @@ export const adminUpdateUser = createServerFn({ method: "POST" })
     if (data.phone !== undefined) patch.phone = data.phone;
     if (data.company !== undefined) patch.company = data.company;
     if (Object.keys(patch).length) {
-      const { error } = await supabaseAdmin.from("profiles").update(patch).eq("id", data.user_id);
+      const { error } = await supabaseAdmin.from("profiles").update(patch as never).eq("id", data.user_id);
       if (error) throw new Error(error.message);
     }
 
