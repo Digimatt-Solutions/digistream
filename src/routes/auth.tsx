@@ -82,9 +82,7 @@ function AuthPage() {
       {/* Right form */}
       <div className="flex items-center justify-center bg-background px-6 py-12">
         <div className="w-full max-w-md">
-          <div className="mb-8 flex flex-col items-center lg:hidden">
-            <Brand size="lg" />
-          </div>
+
           <div className="rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-elevated)]">
             <div className="mb-6 flex flex-col items-center">
               <Brand size="lg" />
