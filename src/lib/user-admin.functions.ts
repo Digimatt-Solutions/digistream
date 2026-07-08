@@ -14,7 +14,7 @@ export const adminUpdateUser = createServerFn({ method: "POST" })
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
     // Update profile
-    const patch: Record<string, unknown> = {};
+    const patch: Record<string, string> = {};
     if (data.full_name !== undefined) patch.full_name = data.full_name;
     if (data.email !== undefined) patch.email = data.email;
     if (data.phone !== undefined) patch.phone = data.phone;
