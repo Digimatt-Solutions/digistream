@@ -28,6 +28,7 @@ import {
   Loader2,
   Film,
   Trash2,
+  Pencil,
   Music2,
   Video,
   Radio,
