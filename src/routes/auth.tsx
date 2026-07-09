@@ -73,9 +73,10 @@ function AuthPage() {
           className="absolute inset-0 h-full w-full object-cover object-center"
         />
 
-        {/* Subtle Bottom Gradient */}
-<div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/90 via-black/60 to-transparent" />
+        {/* Subtle Bottom Gradient - lighter for a premium feel */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/60 via-black/25 to-transparent" />
+
         {/* Text */}
         <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 md:p-10 lg:p-12">
           <div className="max-w-sm">
