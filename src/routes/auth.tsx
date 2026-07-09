@@ -74,7 +74,8 @@ function AuthPage() {
         />
 
         {/* Subtle Bottom Gradient */}
-<div className="absolute inset-0 bg-[radial-gradient(ellipse_65%_50%_at_-5%_105%,rgba(0,0,0,0.58)_0%,rgba(0,0,0,0.35)_50%,rgba(0,0,0,0.15)_65%,transparent_95%)]" />
+<div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/90 via-black/60 to-transparent" />
         {/* Text */}
         <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 md:p-10 lg:p-12">
           <div className="max-w-sm">
