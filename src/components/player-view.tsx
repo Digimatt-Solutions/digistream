@@ -193,8 +193,7 @@ export function PlayerView({ standalone = false }: { standalone?: boolean }) {
           <div className="aspect-video lg:aspect-[21/7] xl:aspect-[21/8] bg-black">
             {(() => {
               const isAudio =
-                (selected.content_type === "song" ||
-                  selected.content_type === "podcast") &&
+                (selected.content_type === "song" || selected.content_type === "podcast") &&
                 !/\.(mp4|webm|mov|m3u8)(\?|$)/i.test(selected.stream_url ?? "");
               const commonProps = {
                 key: selected.id,

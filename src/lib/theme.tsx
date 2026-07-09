@@ -2,7 +2,11 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 
 type Theme = "light" | "dark";
 
-const Ctx = createContext<{ theme: Theme; toggle: () => void; setTheme: (t: Theme) => void } | null>(null);
+const Ctx = createContext<{
+  theme: Theme;
+  toggle: () => void;
+  setTheme: (t: Theme) => void;
+} | null>(null);
 
 function apply(theme: Theme) {
   if (typeof document === "undefined") return;
@@ -23,7 +27,9 @@ export function ThemeProvider({
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    const saved = (typeof window !== "undefined" && (localStorage.getItem(storageKey) as Theme | null)) || defaultTheme;
+    const saved =
+      (typeof window !== "undefined" && (localStorage.getItem(storageKey) as Theme | null)) ||
+      defaultTheme;
     setThemeState(saved);
     apply(saved);
     setHydrated(true);
@@ -38,7 +44,11 @@ export function ThemeProvider({
   };
   const toggle = () => setTheme(theme === "dark" ? "light" : "dark");
 
-  return <Ctx.Provider value={{ theme: hydrated ? theme : defaultTheme, toggle, setTheme }}>{children}</Ctx.Provider>;
+  return (
+    <Ctx.Provider value={{ theme: hydrated ? theme : defaultTheme, toggle, setTheme }}>
+      {children}
+    </Ctx.Provider>
+  );
 }
 
 export function useTheme() {

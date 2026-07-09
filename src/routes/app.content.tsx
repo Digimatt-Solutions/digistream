@@ -103,9 +103,7 @@ function ContentPage() {
       setForm((f) => ({
         ...f,
         stream_url: signed.signedUrl,
-        content_type:
-          f.content_type ||
-          (file.type.startsWith("audio") ? "song" : "video"),
+        content_type: f.content_type || (file.type.startsWith("audio") ? "song" : "video"),
       }));
       setUploadPct(100);
       toast.success("Upload complete");
@@ -351,16 +349,9 @@ function ContentPage() {
                           style={{ width: `${uploadPct}%` }}
                         />
                       </div>
-                      <p className="text-[11px] text-muted-foreground">
-                        Uploading… {uploadPct}%
-                      </p>
+                      <p className="text-[11px] text-muted-foreground">Uploading… {uploadPct}%</p>
                     </div>
                   )}
-                  <p className="mt-2 text-[11px] text-muted-foreground">
-                    Files are stored securely in Lovable Cloud. For very large videos
-                    (over 500MB) consider hosting on a CDN like Bunny.net or Cloudflare
-                    Stream and pasting the URL above.
-                  </p>
                 </div>
               </div>
               <DialogFooter>

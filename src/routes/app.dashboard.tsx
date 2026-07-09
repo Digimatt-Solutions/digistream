@@ -378,7 +378,9 @@ function ClientDashboard() {
           </div>
           {active && (
             <div className="rounded-2xl bg-black/25 border p-5 backdrop-blur">
-              <div className="text-xs text-white uppercase tracking-widest opacity-80">Renews / expires</div>
+              <div className="text-xs text-white uppercase tracking-widest opacity-80">
+                Renews / expires
+              </div>
               <div className="mt-1 text-2xl font-bold">
                 {expiresAt ? expiresAt.toLocaleDateString() : "-"}
               </div>

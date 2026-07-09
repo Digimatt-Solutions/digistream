@@ -33,7 +33,6 @@ export async function compressImage(
   const cw = Math.max(1, Math.round(w * scale));
   const ch = Math.max(1, Math.round(h * scale));
 
-
   const canvas = document.createElement("canvas");
   canvas.width = cw;
   canvas.height = ch;

@@ -139,7 +139,6 @@ function ProfilePage() {
     }
   };
 
-
   if (isLoading)
     return (
       <div className="flex justify-center p-12">
@@ -229,10 +228,10 @@ function ProfilePage() {
               </div>
               <div className="pb-1">
                 <div className="flex flex-wrap items-center justify-center gap-2 md:justify-start">
-                  <h2 className="text-xl font-bold sm:text-2xl">
+                  <h2 className="text-xl text-white mb-2 font-bold sm:text-2xl z-10">
                     {form.full_name || "Unnamed user"}
                   </h2>
-                  <Badge variant="secondary" className="capitalize">
+                  <Badge variant="secondary" className="capitalize z-10">
                     <CheckCircle2 className="mr-1 h-3 w-3 text-success" />
                     {role}
                   </Badge>
