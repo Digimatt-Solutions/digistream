@@ -286,6 +286,40 @@ function ContentPage() {
                     placeholder="https://…/video.mp4"
                   />
                 </div>
+                <div className="rounded-lg border border-dashed border-border p-3">
+                  <Label className="text-xs uppercase tracking-wider text-muted-foreground">
+                    Or upload from device
+                  </Label>
+                  <Input
+                    type="file"
+                    accept="video/*,audio/*"
+                    className="mt-2 cursor-pointer file:mr-3 file:rounded-md file:border-0 file:bg-primary file:px-3 file:py-1.5 file:text-primary-foreground"
+                    disabled={uploading}
+                    onChange={(e) => {
+                      const f = e.target.files?.[0];
+                      if (f) uploadFile(f);
+                      e.target.value = "";
+                    }}
+                  />
+                  {uploading && (
+                    <div className="mt-2 space-y-1">
+                      <div className="h-1.5 overflow-hidden rounded-full bg-secondary">
+                        <div
+                          className="h-full bg-primary transition-all"
+                          style={{ width: `${uploadPct}%` }}
+                        />
+                      </div>
+                      <p className="text-[11px] text-muted-foreground">
+                        Uploading… {uploadPct}%
+                      </p>
+                    </div>
+                  )}
+                  <p className="mt-2 text-[11px] text-muted-foreground">
+                    Files are stored securely in Lovable Cloud. For very large videos
+                    (over 500MB) consider hosting on a CDN like Bunny.net or Cloudflare
+                    Stream and pasting the URL above.
+                  </p>
+                </div>
               </div>
               <DialogFooter>
                 <Button variant="ghost" onClick={() => setOpen(false)}>
