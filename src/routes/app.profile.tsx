@@ -9,9 +9,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Camera, Mail, Phone, Building2, CheckCircle2 } from "lucide-react";
+import { Loader2, Camera, Mail, Phone, Building2, CheckCircle2, ImagePlus } from "lucide-react";
 import { toast } from "sonner";
 import { useAvatarUrl, uploadAvatar } from "@/lib/avatar";
+import { compressImage } from "@/lib/image";
 import { logAction } from "@/lib/activity";
 import { format } from "date-fns";
 
@@ -23,6 +24,7 @@ function ProfilePage() {
   const { user, role } = useSession();
   const qc = useQueryClient();
   const fileInput = useRef<HTMLInputElement>(null);
+  const coverInput = useRef<HTMLInputElement>(null);
 
   const { data, isLoading } = useQuery({
     queryKey: ["profile", user?.id],
@@ -33,19 +35,27 @@ function ProfilePage() {
 
   const [form, setForm] = useState({ full_name: "", company: "", phone: "", bio: "" });
   const [avatarPath, setAvatarPath] = useState<string | null>(null);
+  const [coverPath, setCoverPath] = useState<string | null>(null);
   const avatarDisplay = useAvatarUrl(avatarPath);
+  const coverDisplay = useAvatarUrl(coverPath);
 
   useEffect(() => {
     if (data) {
       setForm({
-        full_name: data.full_name ?? "",
+        full_name:
+          data.full_name ?? (user?.user_metadata as { full_name?: string })?.full_name ?? "",
         company: data.company ?? "",
         phone: data.phone ?? "",
         bio: (data as any).bio ?? "",
       });
       setAvatarPath((data as any).avatar_url ?? null);
+      setCoverPath((data as any).cover_url ?? null);
+    } else if (user) {
+      // No profile row yet - prefill from auth metadata (name entered at signup)
+      const meta = user.user_metadata as { full_name?: string } | undefined;
+      setForm((f) => ({ ...f, full_name: meta?.full_name ?? f.full_name }));
     }
-  }, [data]);
+  }, [data, user]);
 
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
