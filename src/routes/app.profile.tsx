@@ -9,9 +9,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Camera, Mail, Phone, Building2, CheckCircle2 } from "lucide-react";
+import { Loader2, Camera, Mail, Phone, Building2, CheckCircle2, ImagePlus } from "lucide-react";
 import { toast } from "sonner";
 import { useAvatarUrl, uploadAvatar } from "@/lib/avatar";
+import { compressImage } from "@/lib/image";
 import { logAction } from "@/lib/activity";
 import { format } from "date-fns";
 
@@ -23,6 +24,7 @@ function ProfilePage() {
   const { user, role } = useSession();
   const qc = useQueryClient();
   const fileInput = useRef<HTMLInputElement>(null);
+  const coverInput = useRef<HTMLInputElement>(null);
 
   const { data, isLoading } = useQuery({
     queryKey: ["profile", user?.id],
@@ -33,19 +35,27 @@ function ProfilePage() {
 
   const [form, setForm] = useState({ full_name: "", company: "", phone: "", bio: "" });
   const [avatarPath, setAvatarPath] = useState<string | null>(null);
+  const [coverPath, setCoverPath] = useState<string | null>(null);
   const avatarDisplay = useAvatarUrl(avatarPath);
+  const coverDisplay = useAvatarUrl(coverPath);
 
   useEffect(() => {
     if (data) {
       setForm({
-        full_name: data.full_name ?? "",
+        full_name:
+          data.full_name ?? (user?.user_metadata as { full_name?: string })?.full_name ?? "",
         company: data.company ?? "",
         phone: data.phone ?? "",
         bio: (data as any).bio ?? "",
       });
       setAvatarPath((data as any).avatar_url ?? null);
+      setCoverPath((data as any).cover_url ?? null);
+    } else if (user) {
+      // No profile row yet - prefill from auth metadata (name entered at signup)
+      const meta = user.user_metadata as { full_name?: string } | undefined;
+      setForm((f) => ({ ...f, full_name: meta?.full_name ?? f.full_name }));
     }
-  }, [data]);
+  }, [data, user]);
 
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -61,6 +71,7 @@ function ProfilePage() {
       phone: form.phone,
       bio: form.bio,
       avatar_url: avatarPath,
+      cover_url: coverPath,
       updated_at: new Date().toISOString(),
     } as never);
     setSaving(false);
@@ -74,19 +85,19 @@ function ProfilePage() {
   const onAvatarPick = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !user) return;
-    if (file.size > 5 * 1024 * 1024) return toast.error("Image too large (max 5 MB)");
+    if (file.size > 10 * 1024 * 1024) return toast.error("Image too large (max 10 MB)");
     setUploading(true);
     try {
-      const path = await uploadAvatar(user.id, file);
+      const compressed = await compressImage(file, { maxDim: 512, quality: 0.85 });
+      const compFile = new File([compressed], `avatar.jpg`, { type: "image/jpeg" });
+      const path = await uploadAvatar(user.id, compFile);
       setAvatarPath(path);
-      await supabase
-        .from("profiles")
-        .upsert({
-          id: user.id,
-          email: user.email!,
-          avatar_url: path,
-          updated_at: new Date().toISOString(),
-        });
+      await supabase.from("profiles").upsert({
+        id: user.id,
+        email: user.email!,
+        avatar_url: path,
+        updated_at: new Date().toISOString(),
+      } as never);
       qc.invalidateQueries({ queryKey: ["profile-lite"] });
       qc.invalidateQueries({ queryKey: ["profile"] });
       toast.success("Photo updated");
@@ -97,6 +108,37 @@ function ProfilePage() {
       setUploading(false);
     }
   };
+
+  const onCoverPick = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+    if (file.size > 15 * 1024 * 1024) return toast.error("Image too large (max 15 MB)");
+    setUploading(true);
+    try {
+      const compressed = await compressImage(file, { maxDim: 1800, quality: 0.82 });
+      const ext = "jpg";
+      const path = `${user.id}/cover-${Date.now()}.${ext}`;
+      const { error } = await supabase.storage
+        .from("avatars")
+        .upload(path, compressed, { upsert: true, contentType: "image/jpeg" });
+      if (error) throw error;
+      setCoverPath(path);
+      await supabase.from("profiles").upsert({
+        id: user.id,
+        email: user.email!,
+        cover_url: path,
+        updated_at: new Date().toISOString(),
+      } as never);
+      qc.invalidateQueries({ queryKey: ["profile"] });
+      toast.success("Cover updated");
+      logAction(user.id, "profile.cover_uploaded", "profile");
+    } catch (err: any) {
+      toast.error(err.message ?? "Upload failed");
+    } finally {
+      setUploading(false);
+    }
+  };
+
 
   if (isLoading)
     return (
@@ -121,7 +163,35 @@ function ProfilePage() {
 
       {/* Hero card */}
       <Card className="relative overflow-hidden rounded-3xl p-0 shadow-[var(--shadow-elevated)]">
-        <div className="h-24 bg-gradient-to-r from-primary via-primary-glow to-primary sm:h-32" />
+        <div className="relative h-32 sm:h-44">
+          {coverDisplay ? (
+            <img
+              src={coverDisplay}
+              alt=""
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          ) : (
+            <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary-glow to-primary" />
+          )}
+          {/* Overlay to keep any overlaid content readable */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/10 to-transparent" />
+          <button
+            type="button"
+            onClick={() => coverInput.current?.click()}
+            className="absolute bottom-3 right-3 z-10 inline-flex items-center gap-1.5 rounded-full bg-black/55 px-3 py-1.5 text-[11px] font-semibold text-white backdrop-blur transition hover:bg-black/70"
+            title={coverDisplay ? "Change cover" : "Upload cover"}
+          >
+            <ImagePlus className="h-3.5 w-3.5" />
+            {coverDisplay ? "Change cover" : "Add cover"}
+          </button>
+          <input
+            ref={coverInput}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={onCoverPick}
+          />
+        </div>
         <div className="px-5 pb-6 sm:px-8 sm:pb-8">
           <div className="-mt-14 flex flex-col items-center gap-4 text-center md:flex-row md:items-end md:justify-between md:text-left">
             <div className="flex flex-col items-center gap-4 md:flex-row md:items-end md:gap-5">

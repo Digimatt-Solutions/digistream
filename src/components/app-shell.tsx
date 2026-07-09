@@ -23,6 +23,7 @@ import { useSession } from "@/lib/session";
 import { supabase } from "@/integrations/supabase/client";
 import { Brand } from "@/components/brand";
 import { RefreshButton } from "@/components/refresh-button";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useAvatarUrl } from "@/lib/avatar";
@@ -211,6 +212,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             </p>
           </div>
           <RefreshButton label="" />
+          <ThemeToggle />
           <Button variant="ghost" size="icon" className="rounded-lg">
             <Bell className="h-4 w-4" />
           </Button>
