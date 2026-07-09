@@ -71,6 +71,7 @@ function ProfilePage() {
       phone: form.phone,
       bio: form.bio,
       avatar_url: avatarPath,
+      cover_url: coverPath,
       updated_at: new Date().toISOString(),
     } as never);
     setSaving(false);
@@ -84,19 +85,19 @@ function ProfilePage() {
   const onAvatarPick = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !user) return;
-    if (file.size > 5 * 1024 * 1024) return toast.error("Image too large (max 5 MB)");
+    if (file.size > 10 * 1024 * 1024) return toast.error("Image too large (max 10 MB)");
     setUploading(true);
     try {
-      const path = await uploadAvatar(user.id, file);
+      const compressed = await compressImage(file, { maxDim: 512, quality: 0.85 });
+      const compFile = new File([compressed], `avatar.jpg`, { type: "image/jpeg" });
+      const path = await uploadAvatar(user.id, compFile);
       setAvatarPath(path);
-      await supabase
-        .from("profiles")
-        .upsert({
-          id: user.id,
-          email: user.email!,
-          avatar_url: path,
-          updated_at: new Date().toISOString(),
-        });
+      await supabase.from("profiles").upsert({
+        id: user.id,
+        email: user.email!,
+        avatar_url: path,
+        updated_at: new Date().toISOString(),
+      } as never);
       qc.invalidateQueries({ queryKey: ["profile-lite"] });
       qc.invalidateQueries({ queryKey: ["profile"] });
       toast.success("Photo updated");
@@ -107,6 +108,37 @@ function ProfilePage() {
       setUploading(false);
     }
   };
+
+  const onCoverPick = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+    if (file.size > 15 * 1024 * 1024) return toast.error("Image too large (max 15 MB)");
+    setUploading(true);
+    try {
+      const compressed = await compressImage(file, { maxDim: 1800, quality: 0.82 });
+      const ext = "jpg";
+      const path = `${user.id}/cover-${Date.now()}.${ext}`;
+      const { error } = await supabase.storage
+        .from("avatars")
+        .upload(path, compressed, { upsert: true, contentType: "image/jpeg" });
+      if (error) throw error;
+      setCoverPath(path);
+      await supabase.from("profiles").upsert({
+        id: user.id,
+        email: user.email!,
+        cover_url: path,
+        updated_at: new Date().toISOString(),
+      } as never);
+      qc.invalidateQueries({ queryKey: ["profile"] });
+      toast.success("Cover updated");
+      logAction(user.id, "profile.cover_uploaded", "profile");
+    } catch (err: any) {
+      toast.error(err.message ?? "Upload failed");
+    } finally {
+      setUploading(false);
+    }
+  };
+
 
   if (isLoading)
     return (
