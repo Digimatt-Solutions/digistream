@@ -4,7 +4,10 @@
 
 [build.environment]
   NITRO_PRESET = "netlify"
-  NODE_VERSION = "20"
+  # Node 22+ ships a native WebSocket, which Supabase realtime requires
+  # when a serverless build initializes the JS client. Older versions crash
+  # with "Node.js detected but native WebSocket not found".
+  NODE_VERSION = "22"
 
 # Nitro's Netlify preset emits serverless functions into .netlify/functions-internal
 # and static assets into dist. The redirects below are handled by the preset's
