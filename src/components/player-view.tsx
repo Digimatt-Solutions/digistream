@@ -191,15 +191,48 @@ export function PlayerView({ standalone = false }: { standalone?: boolean }) {
       {selected && (
         <Card className="overflow-hidden rounded-2xl bg-black shadow-[var(--shadow-elevated)]">
           <div className="aspect-video lg:aspect-[21/7] xl:aspect-[21/8] bg-black">
-            <video
-              key={selected.id}
-              controls
-              autoPlay
-              className="h-full w-full object-cover"
-              poster={selected.thumbnail_url}
-            >
-              <source src={selected.stream_url} type="video/mp4" />
-            </video>
+            {(() => {
+              const isAudio =
+                (selected.content_type === "song" ||
+                  selected.content_type === "podcast") &&
+                !/\.(mp4|webm|mov|m3u8)(\?|$)/i.test(selected.stream_url ?? "");
+              const commonProps = {
+                key: selected.id,
+                src: selected.stream_url,
+                controls: true,
+                autoPlay: true,
+                onEnded: () => {
+                  // Autoplay next item in the same section based on subscription
+                  const list = filtered as any[];
+                  const idx = list.findIndex((c) => c.id === selected.id);
+                  const next = list[idx + 1] ?? list[0];
+                  if (next && next.id !== selected.id) setSelected(next);
+                },
+                className: "h-full w-full object-contain",
+              } as const;
+              return isAudio ? (
+                <div
+                  className="flex h-full w-full flex-col items-center justify-center gap-4 bg-cover bg-center p-6"
+                  style={
+                    selected.thumbnail_url
+                      ? { backgroundImage: `url(${selected.thumbnail_url})` }
+                      : undefined
+                  }
+                >
+                  <div className="rounded-2xl bg-black/60 p-6 backdrop-blur">
+                    <div className="mb-3 text-center text-white">
+                      <div className="text-lg font-bold">{selected.title}</div>
+                      {selected.artist && (
+                        <div className="text-xs text-white/70">{selected.artist}</div>
+                      )}
+                    </div>
+                    <audio {...commonProps} className="w-full sm:w-96" />
+                  </div>
+                </div>
+              ) : (
+                <video {...commonProps} poster={selected.thumbnail_url} />
+              );
+            })()}
           </div>
 
           <div className="p-4 text-white sm:p-5">
