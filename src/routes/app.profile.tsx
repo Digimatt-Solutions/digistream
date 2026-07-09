@@ -163,7 +163,35 @@ function ProfilePage() {
 
       {/* Hero card */}
       <Card className="relative overflow-hidden rounded-3xl p-0 shadow-[var(--shadow-elevated)]">
-        <div className="h-24 bg-gradient-to-r from-primary via-primary-glow to-primary sm:h-32" />
+        <div className="relative h-32 sm:h-44">
+          {coverDisplay ? (
+            <img
+              src={coverDisplay}
+              alt=""
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          ) : (
+            <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary-glow to-primary" />
+          )}
+          {/* Overlay to keep any overlaid content readable */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/10 to-transparent" />
+          <button
+            type="button"
+            onClick={() => coverInput.current?.click()}
+            className="absolute bottom-3 right-3 z-10 inline-flex items-center gap-1.5 rounded-full bg-black/55 px-3 py-1.5 text-[11px] font-semibold text-white backdrop-blur transition hover:bg-black/70"
+            title={coverDisplay ? "Change cover" : "Upload cover"}
+          >
+            <ImagePlus className="h-3.5 w-3.5" />
+            {coverDisplay ? "Change cover" : "Add cover"}
+          </button>
+          <input
+            ref={coverInput}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={onCoverPick}
+          />
+        </div>
         <div className="px-5 pb-6 sm:px-8 sm:pb-8">
           <div className="-mt-14 flex flex-col items-center gap-4 text-center md:flex-row md:items-end md:justify-between md:text-left">
             <div className="flex flex-col items-center gap-4 md:flex-row md:items-end md:gap-5">
