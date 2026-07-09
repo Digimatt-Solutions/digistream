@@ -120,11 +120,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem('digistream-theme');if(t==='dark'){document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark';}}catch(e){}`,
+          }}
+        />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         {children}
         <Scripts />
       </body>
@@ -132,14 +137,18 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
-      <SessionProvider>
-        <Outlet />
-        <Toaster position="top-right" richColors />
-      </SessionProvider>
+      <ThemeProvider>
+        <SessionProvider>
+          <Outlet />
+          <Toaster position="top-right" richColors />
+        </SessionProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
+
