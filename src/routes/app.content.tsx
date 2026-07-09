@@ -76,6 +76,48 @@ function ContentPage() {
   };
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploadPct, setUploadPct] = useState(0);
+
+  const uploadFile = async (file: File) => {
+    setUploading(true);
+    setUploadPct(5);
+    try {
+      const ext = file.name.split(".").pop() || "bin";
+      const path = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+      // Simulated progress while upload runs (supabase-js has no native progress)
+      const ticker = setInterval(
+        () => setUploadPct((p) => (p < 85 ? p + Math.max(1, Math.round((90 - p) / 8)) : p)),
+        400,
+      );
+      const { error: upErr } = await supabase.storage
+        .from("content")
+        .upload(path, file, { cacheControl: "3600", upsert: false, contentType: file.type });
+      clearInterval(ticker);
+      if (upErr) throw upErr;
+      // 1-year signed URL — private bucket, signed so any signed-in viewer can stream
+      const { data: signed, error: sErr } = await supabase.storage
+        .from("content")
+        .createSignedUrl(path, 60 * 60 * 24 * 365);
+      if (sErr || !signed) throw sErr ?? new Error("Failed to sign URL");
+      setForm((f) => ({
+        ...f,
+        stream_url: signed.signedUrl,
+        content_type:
+          f.content_type ||
+          (file.type.startsWith("audio") ? "song" : "video"),
+      }));
+      setUploadPct(100);
+      toast.success("Upload complete");
+    } catch (e: any) {
+      toast.error(e.message ?? "Upload failed");
+    } finally {
+      setTimeout(() => {
+        setUploading(false);
+        setUploadPct(0);
+      }, 400);
+    }
+  };
 
   const filtered = useMemo(() => {
     return (data ?? []).filter((c: any) => {
