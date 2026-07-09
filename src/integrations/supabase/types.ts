@@ -60,7 +60,15 @@ export type Database = {
           user_agent?: string | null
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "activity_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       client_brands: {
         Row: {
@@ -229,6 +237,7 @@ export type Database = {
           avatar_url: string | null
           bio: string | null
           company: string | null
+          cover_url: string | null
           created_at: string
           email: string
           full_name: string | null
@@ -240,6 +249,7 @@ export type Database = {
           avatar_url?: string | null
           bio?: string | null
           company?: string | null
+          cover_url?: string | null
           created_at?: string
           email: string
           full_name?: string | null
@@ -251,6 +261,7 @@ export type Database = {
           avatar_url?: string | null
           bio?: string | null
           company?: string | null
+          cover_url?: string | null
           created_at?: string
           email?: string
           full_name?: string | null
@@ -309,6 +320,13 @@ export type Database = {
             columns: ["package_id"]
             isOneToOne: false
             referencedRelation: "packages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subscriptions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
